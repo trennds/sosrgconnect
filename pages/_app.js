@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
+import 'regenerator-runtime/runtime';
+import 'core-js/stable';
 
 export default class MyApp extends App {
 	componentDidMount() {
