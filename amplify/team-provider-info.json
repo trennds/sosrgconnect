@@ -1,0 +1,14 @@
+{
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "sosrgconnect-master-20191209214432-authRole",
+            "UnauthRoleArn": "arn:aws:iam::498334258415:role/sosrgconnect-master-20191209214432-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::498334258415:role/sosrgconnect-master-20191209214432-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "sosrgconnect-master-20191209214432-deployment",
+            "UnauthRoleName": "sosrgconnect-master-20191209214432-unauthRole",
+            "StackName": "sosrgconnect-master-20191209214432",
+            "StackId": "arn:aws:cloudformation:ap-south-1:498334258415:stack/sosrgconnect-master-20191209214432/fd2b26c0-1a9e-11ea-9a40-0a95c9550e3e"
+        }
+    }
+}

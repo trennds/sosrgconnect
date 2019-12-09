@@ -1,6 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
+import Amplify from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
+
+Amplify.configure({
+	Auth: {
+		region: 'ap-south-1',
+		userPoolId: 'ap-south-1_pWjBn0W3N',
+		userPoolWebClientId: '3t5o8ktmo83kfksu0ghsjjapcv',
+		authenticationFlowType: 'USER_PASSWORD_AUTH'
+	}
+});
 import {
 	makeStyles,
 	withStyles,
@@ -21,7 +33,8 @@ import {
 	Input,
 	OutlinedInput,
 	InputLabel,
-	FormControl
+	FormControl,
+	CircularProgress
 } from '@material-ui/core';
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
 
@@ -66,8 +79,33 @@ class RegisterPage extends React.Component {
 			phone: '',
 			email: '',
 			password: '',
+			loading: false,
 			showPassword: false
 		};
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+
+	onSubmit() {
+		this.setState({
+			loading: true
+		});
+		var self = this;
+		Auth.signUp({
+			username: self.state.email,
+			password: self.state.password,
+			attributes: {
+				name: `${self.state.firstName} ${self.state.lastName}`,
+				phone_number: `+91${self.state.phone}`,
+				email: self.state.email
+			}
+		})
+			.then(res => {
+				this.setState({
+					loading: false
+				});
+				Router.push('/setup');
+			})
+			.catch(err => console.log(err));
 	}
 
 	render() {
@@ -93,8 +131,8 @@ class RegisterPage extends React.Component {
 										margin="normal"
 										required
 										fullWidth
-										id="email"
-										type="email"
+										id="firstname"
+										type="text"
 										label="First Name"
 										autoFocus
 										value={this.state.firstName}
@@ -107,8 +145,8 @@ class RegisterPage extends React.Component {
 										margin="normal"
 										required
 										fullWidth
-										id="email"
-										type="email"
+										id="lastname"
+										type="text"
 										label="Last Name"
 										value={this.state.lastName}
 										onChange={e => this.setState({ lastName: e.target.value })}
@@ -182,8 +220,13 @@ class RegisterPage extends React.Component {
 								variant="contained"
 								color="primary"
 								className={classes.submit}
+								onClick={e => this.onSubmit()}
 							>
-								Register
+								{this.state.loading ? (
+									<CircularProgress size={24} />
+								) : (
+									'Register'
+								)}
 							</Button>
 							<Grid container>
 								<Grid item xs>
