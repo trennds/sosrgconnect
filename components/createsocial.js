@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Link, YouTube } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
+import { func } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
 	margin: {
@@ -26,13 +27,14 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function CreatePost(props) {
+export default function CreateSocial(props) {
 	const classes = useStyles();
+	const [description, setDescription] = useState('');
+	const [ytUrl, setYtUrl] = useState('');
+	const [webUrl, setWebUrl] = useState('');
+	const [ytRes, setYtRes] = useState(null);
+	const [webRes, setWebRes] = useState(null);
 	const [files, setFiles] = useState([]);
-
-	const handleFileChange = files => {
-		setFiles(files);
-	};
 
 	const handleClickOpen = () => {
 		props.handleOpen(true);
@@ -42,13 +44,40 @@ export default function CreatePost(props) {
 		props.handleOpen(false);
 	};
 
+	const handleYoutube = value => {
+		setYtUrl(value);
+
+		axios
+			.post('https://my-router-app.trennds.workers.dev/foo', {
+				url: ytUrl
+			})
+			.then(res => {
+				setYtRes(res.data);
+			});
+	};
+
+	const handleFileChange = files => {
+		setFiles(files);
+
+		if (files.length > 0) {
+			var formData = new FormData();
+			formData.append('key', 'main2.png');
+			formData.append('file', files[0]);
+			axios.post('http://trenndstest.s3.amazonaws.com/', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			});
+		}
+	};
+
 	return (
 		<Dialog
 			open={props.isOpen}
 			onClose={handleClose}
 			aria-labelledby="form-dialog-title"
 		>
-			<DialogTitle id="form-dialog-title">Create Post</DialogTitle>
+			<DialogTitle id="form-dialog-title">Create Social Post</DialogTitle>
 			<DialogContent>
 				{/* <DialogContentText>
 					To subscribe to this website, please enter your email address here. We
@@ -70,9 +99,10 @@ export default function CreatePost(props) {
 					acceptedFiles={['image/*']}
 					dropzoneText="Drag a image or click to upload"
 					showPreviewsInDropzone={false}
-					showPreviews="true"
+					showPreviews
 					dropzoneClass={classes.dropZone}
 				/>
+				{/* <input type="file" onChange={e => handleFileChange(e.target.files)} /> */}
 				<TextField
 					fullWidth
 					className={classes.margin}
@@ -89,6 +119,8 @@ export default function CreatePost(props) {
 					fullWidth
 					label="Youtube Link (Optional)"
 					className={classes.margin}
+					value={ytUrl}
+					onChange={e => handleYoutube(e.target.value)}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
@@ -97,6 +129,9 @@ export default function CreatePost(props) {
 						)
 					}}
 				/>
+				{ytRes != null ? (
+					<img src={ytRes.thumbnail_url} height={ytRes.height} />
+				) : null}
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary">

@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import Head from 'next/head';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography, makeStyles, withStyles } from '@material-ui/core';
+
+const drawerWidth = 240;
+
+const styles = makeStyles(theme => ({
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+		margin: `100px 0px 0px ${drawerWidth}px`
+	},
+	toolbar: theme.mixins.toolbar
+}));
 
 function Copyright() {
 	return (
@@ -16,8 +28,10 @@ function Copyright() {
 	);
 }
 
-export default class Layout extends React.Component {
+class Layout extends React.Component {
 	render() {
+		const { classes } = this.props;
+
 		return (
 			<div>
 				<Head>
@@ -33,11 +47,21 @@ export default class Layout extends React.Component {
 						rel="stylesheet"
 						href="https://fonts.googleapis.com/icon?family=Material+Icons"
 					/>
+					<script src="https://sdk.amazonaws.com/js/aws-sdk-2.584.0.min.js"></script>
 				</Head>
 				<Navbar />
-				{this.props.children}
+				<main className={classes.content}>
+					<div className={classes.toolbar} />
+					{this.props.children}
+				</main>
 				{Copyright()}
 			</div>
 		);
 	}
 }
+
+Layout.propTypes = {
+	classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Layout);

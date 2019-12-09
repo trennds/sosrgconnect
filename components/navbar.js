@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import Router from 'next/router';
 import {
 	AppBar,
 	Typography,
@@ -14,19 +15,23 @@ import {
 	List,
 	ListItemIcon,
 	ListItemText,
-	Badge
+	Badge,
+	CssBaseline
 } from '@material-ui/core';
 import {
 	AccountCircle,
 	Add,
 	Menu,
-	ChevronLeft,
-	ChevronRight,
-	Notifications
+	Work,
+	Notifications,
+	Message,
+	BusinessCenter,
+	Feedback
 } from '@material-ui/icons';
-import CreatePost from './createpost';
+import CreatePost from './createsocial';
 import CreateWork from './creatework';
 import CreateJob from './createjob';
+import FeedbackForm from './feedbackform';
 
 const drawerWidth = 240;
 
@@ -81,13 +86,10 @@ const useStyles = makeStyles(theme => ({
 			width: theme.spacing(9) + 1
 		}
 	},
-	toolbar: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		padding: theme.spacing(0, 1),
-		...theme.mixins.toolbar
+	drawerPaper: {
+		width: drawerWidth
 	},
+	toolbar: theme.mixins.toolbar,
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing(3)
@@ -103,13 +105,14 @@ const useStyles = makeStyles(theme => ({
 export default function Navbar() {
 	const classes = useStyles();
 	const theme = useTheme();
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const [createPost, setCreatePost] = useState(false);
 	const [createWork, setCreateWork] = useState(false);
 	const [createJob, setCreateJob] = useState(false);
+	const [feedback, setFeedback] = useState(false);
 
 	const handleDrawerOpen = () => {
-		setOpen(true);
+		setOpen(!open);
 	};
 
 	const handleDrawerClose = () => {
@@ -117,26 +120,24 @@ export default function Navbar() {
 	};
 
 	return (
-		<div>
-			<AppBar
-				position="fixed"
-				className={clsx(classes.appBar, {
-					[classes.appBarShift]: open
-				})}
-			>
+		<div className={classes.root}>
+			<CssBaseline />
+			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
 					<IconButton
 						edge="start"
 						color="inherit"
 						aria-label="menu"
-						onClick={handleDrawerOpen}
-						className={clsx(classes.menuButton, {
-							[classes.hide]: open
-						})}
+						onClick={e => handleDrawerOpen()}
 					>
 						<Menu />
 					</IconButton>
-					<Typography variant="h5" noWrap className={classes.title}>
+					<Typography
+						variant="h5"
+						noWrap
+						className={classes.title}
+						onClick={() => Router.replace('/')}
+					>
 						Sosrg Connect
 					</Typography>
 					<div style={{ flex: 'right' }}>
@@ -150,6 +151,7 @@ export default function Navbar() {
 							aria-controls="menu-appbar"
 							aria-haspopup="true"
 							color="inherit"
+							onClick={() => Router.push('/profile')}
 						>
 							<AccountCircle />
 						</IconButton>
@@ -157,25 +159,15 @@ export default function Navbar() {
 				</Toolbar>
 			</AppBar>
 			<Drawer
-				variant="permanent"
-				className={clsx(classes.drawer, {
-					[classes.drawerOpen]: open,
-					[classes.drawerClose]: !open
-				})}
+				className={classes.drawer}
+				variant="persistent"
 				classes={{
-					paper: clsx({
-						[classes.drawerOpen]: open,
-						[classes.drawerClose]: !open
-					})
+					paper: classes.drawerPaper
 				}}
 				open={open}
+				onClose={e => handleDrawerClose()}
 			>
-				<div className={classes.toolbar}>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-					</IconButton>
-				</div>
-				<Divider />
+				<div className={classes.toolbar} />
 				<List>
 					<ListItem button onClick={e => setCreatePost(true)}>
 						<ListItemIcon>
@@ -185,21 +177,34 @@ export default function Navbar() {
 					</ListItem>
 					<ListItem button onClick={e => setCreateJob(true)}>
 						<ListItemIcon>
-							<Add />
+							<BusinessCenter />
 						</ListItemIcon>
 						<ListItemText primary="Create Job" />
 					</ListItem>
 					<ListItem button onClick={e => setCreateWork(true)}>
 						<ListItemIcon>
-							<Add />
+							<Work />
 						</ListItemIcon>
 						<ListItemText primary="Create Work/Project" />
+					</ListItem>
+					<ListItem button onClick={() => Router.push('/inbox')}>
+						<ListItemIcon>
+							<Message />
+						</ListItemIcon>
+						<ListItemText primary="Messages" />
+					</ListItem>
+					<ListItem button onClick={e => setFeedback(true)}>
+						<ListItemIcon>
+							<Feedback />
+						</ListItemIcon>
+						<ListItemText primary="Send Feedback" />
 					</ListItem>
 				</List>
 			</Drawer>
 			<CreatePost isOpen={createPost} handleOpen={setCreatePost} />
 			<CreateWork isOpen={createWork} handleOpen={setCreateWork} />
 			<CreateJob isOpen={createJob} handleOpen={setCreateJob} />
+			<FeedbackForm isOpen={feedback} handleOpen={setFeedback} />
 		</div>
 	);
 }
