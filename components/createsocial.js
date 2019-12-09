@@ -1,3 +1,5 @@
+import 'core-js/stable';
+import 'regenerator-runtime';
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
