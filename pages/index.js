@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Layout from '../components/layout';
 import Post from '../components/post';
-import { Container, Grid, withStyles } from '@material-ui/core';
+import {
+	Container,
+	Grid,
+	withStyles,
+	CircularProgress
+} from '@material-ui/core';
 
 const styles = {
 	container: {
@@ -17,8 +22,20 @@ const styles = {
 class IndexPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
 	}
+
+	// getData() {
+	// 	var self = this;
+	// 	axios.get(`${process.env.API_BASE_URL}posts/`).then(res => {
+	// 		this.setState({
+	// 			posts: res.data.Items
+	// 		});
+	// 	});
+	// }
+
+	// componentWillMount() {
+	// 	this.getData();
+	// }
 	render() {
 		const { classes } = this.props;
 
@@ -26,15 +43,29 @@ class IndexPage extends React.Component {
 			<Layout>
 				<Container className={classes.container}>
 					<Grid container spacing={1} justify="center">
-						<Grid item className={classes.grid}>
-							<Post />
-						</Grid>
+						{this.props.posts.length > 0 ? (
+							<Grid item className={classes.grid}>
+								{this.props.posts.map(v => (
+									<Post data={v} key={v.id} />
+								))}
+							</Grid>
+						) : (
+							<CircularProgress />
+						)}
 					</Grid>
 				</Container>
 			</Layout>
 		);
 	}
 }
+
+IndexPage.getInitialProps = async function() {
+	var res = await axios.get(`${process.env.API_BASE_URL}posts/`);
+
+	return {
+		posts: res.data.Items
+	};
+};
 
 IndexPage.propTypes = {
 	classes: PropTypes.object.isRequired

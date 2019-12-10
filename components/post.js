@@ -27,7 +27,7 @@ import { Favorite, Share, Comment, Send } from '@material-ui/icons';
 
 const styles = theme => ({
 	card: {
-		maxWidth: 500
+		width: 500
 	},
 	media: {
 		height: 0,
@@ -112,10 +112,22 @@ class Post extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isExpanded: true
+			isExpanded: false,
+			name: ''
 		};
 
 		this.handleExpandClick = this.handleExpandClick.bind(this);
+	}
+
+	componentDidMount() {
+		var self = this;
+		axios
+			.get(`${process.env.API_BASE_URL}profile/${this.props.data.uploader}`)
+			.then(res => {
+				self.setState({
+					name: res.data.Item.name
+				});
+			});
 	}
 
 	handleExpandClick() {
@@ -131,26 +143,23 @@ class Post extends React.Component {
 			<Card className={classes.card}>
 				<CardHeader
 					avatar={<Avatar className={classes.avatar}>R</Avatar>}
-					title="Shrimp and Chorizo Paella"
-					subheader="September 14, 2016"
+					title={this.state.name}
 				></CardHeader>
 				<CardMedia
-					image="https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+					image={this.props.data.image}
 					className={classes.media}
 					title="Paella dish"
 				/>
 				<CardContent>
 					<Typography variant="body2" color="textSecondary" component="p">
-						This impressive paella is a perfect party dish and a fun meal to
-						cook together with your guests. Add 1 cup of frozen peas along with
-						the mussels, if you like.
+						{this.props.data.description}
 					</Typography>
 				</CardContent>
 				<CardActions>
 					<IconButton>
 						<Favorite />
 					</IconButton>
-					{12}
+					{this.props.data.likes.length}
 					<IconButton>
 						<Share />
 					</IconButton>
