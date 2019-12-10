@@ -12,10 +12,12 @@ import {
 	DialogContentText,
 	DialogActions,
 	InputAdornment,
-	Grid
+	Grid,
+	CircularProgress
 } from '@material-ui/core';
 import { LocationOn } from '@material-ui/icons';
 import NumberFormat from 'react-number-format';
+import v4 from 'uuid/v4';
 
 function NumberFormatCustom(props) {
 	const { inputRef, onChange, ...other } = props;
@@ -45,6 +47,11 @@ NumberFormatCustom.propTypes = {
 
 export default function CreateJob(props) {
 	const [salary, setSalary] = useState('1000');
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [experience, setExperience] = useState(null);
+	const [location, setLocation] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const handleClickOpen = () => {
 		props.handleOpen(true);
@@ -52,6 +59,24 @@ export default function CreateJob(props) {
 
 	const handleClose = () => {
 		props.handleOpen(false);
+	};
+
+	const upload = () => {
+		setLoading(true);
+		axios
+			.post(`${process.env.API_BASE_URL}job/`, {
+				uploader: localStorage.sub,
+				id: 'J_' + v4(),
+				description: description,
+				title: title,
+				experience: experience,
+				location: location,
+				salary: salary
+			})
+			.then(res => {
+				setLoading(false);
+				props.handleOpen(false);
+			});
 	};
 
 	return (
@@ -69,6 +94,8 @@ export default function CreateJob(props) {
 					label="Job Title"
 					type="text"
 					fullWidth
+					value={title}
+					onChange={e => setTitle(e.target.value)}
 				/>
 				<TextField
 					margin="dense"
@@ -78,6 +105,8 @@ export default function CreateJob(props) {
 					fullWidth
 					multiline
 					rows={3}
+					value={description}
+					onChange={e => setDescription(e.target.value)}
 				/>
 				<Grid container spacing={2}>
 					<Grid item>
@@ -96,6 +125,8 @@ export default function CreateJob(props) {
 						<TextField
 							margin="dense"
 							label="Job Location"
+							value={location}
+							onChange={e => setLocation(e.target.value)}
 							InputProps={{
 								startAdornment: (
 									<InputAdornment position="start">
@@ -114,14 +145,16 @@ export default function CreateJob(props) {
 					fullWidth
 					multiline
 					rows={3}
+					value={experience}
+					onChange={e => setExperience(e.target.value)}
 				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary">
 					Cancel
 				</Button>
-				<Button onClick={handleClose} color="primary">
-					Create Job
+				<Button onClick={upload} color="primary">
+					{loading ? <CircularProgress size={24} /> : 'Create Post'}
 				</Button>
 			</DialogActions>
 		</Dialog>

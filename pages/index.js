@@ -10,6 +10,7 @@ import {
 	withStyles,
 	CircularProgress
 } from '@material-ui/core';
+import Job from '../components/job';
 
 const styles = {
 	container: {
@@ -37,9 +38,10 @@ class IndexPage extends React.Component {
 					<Grid container spacing={1} justify="center">
 						{this.props.posts.length > 0 ? (
 							<Grid item className={classes.grid}>
-								{this.props.posts.map(v => (
-									<Post data={v} key={v.id} />
-								))}
+								{this.props.posts.map(v => {
+									if (v.type == 'social') return <Post data={v} key={v.id} />;
+									if (v.type == 'job') return <Job data={v} key={v.id} />;
+								})}
 							</Grid>
 						) : (
 							<CircularProgress />
