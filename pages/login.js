@@ -21,9 +21,22 @@ import {
 	Input,
 	OutlinedInput,
 	InputLabel,
-	FormControl
+	FormControl,
+	CircularProgress
 } from '@material-ui/core';
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
+import Router from 'next/router';
+import Amplify from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
+
+Amplify.configure({
+	Auth: {
+		region: 'ap-south-1',
+		userPoolId: 'ap-south-1_pWjBn0W3N',
+		userPoolWebClientId: '3t5o8ktmo83kfksu0ghsjjapcv',
+		authenticationFlowType: 'USER_PASSWORD_AUTH'
+	}
+});
 
 const styles = {
 	root: {
@@ -63,8 +76,33 @@ class LoginPage extends React.Component {
 		this.state = {
 			email: '',
 			password: '',
-			showPassword: false
+			showPassword: false,
+			loading: false
 		};
+		this.login = this.login.bind(this);
+	}
+
+	async login() {
+		this.setState({
+			loading: true
+		});
+		var self = this;
+		try {
+			const user = await Auth.signIn(self.state.email, self.state.password);
+			Auth.userAttributes(user).then(res => {
+				res.forEach((item, index) => {
+					localStorage.setItem(item.Name, item.Value);
+				});
+				this.setState({
+					loading: false
+				});
+				Router.replace('/');
+			});
+		} catch (err) {
+			if (err.code === 'UserNotConfirmedException') {
+				Router.replace('/setup');
+			}
+		}
 	}
 
 	render() {
@@ -136,8 +174,9 @@ class LoginPage extends React.Component {
 								variant="contained"
 								color="primary"
 								className={classes.submit}
+								onClick={e => this.login()}
 							>
-								Sign In
+								{this.state.loading ? <CircularProgress size={24} /> : 'Login'}
 							</Button>
 							<Grid container>
 								<Grid item xs>

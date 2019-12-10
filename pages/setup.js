@@ -1,15 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Amplify from 'aws-amplify';
+import Amplify, { Storage } from 'aws-amplify';
 import Auth from '@aws-amplify/auth';
 
 Amplify.configure({
 	Auth: {
+		identityPoolId: 'ap-south-1:17f0d95f-24a2-410e-9f52-583a3ebdcf3a',
 		region: 'ap-south-1',
 		userPoolId: 'ap-south-1_pWjBn0W3N',
 		userPoolWebClientId: '3t5o8ktmo83kfksu0ghsjjapcv',
 		authenticationFlowType: 'USER_PASSWORD_AUTH'
+	},
+	Storage: {
+		AWSS3: {
+			bucket: 'images.accounts.sosrgstudios.com', //REQUIRED -  Amazon S3 bucket
+			region: 'ap-south-1' //OPTIONAL -  Amazon service region
+		}
 	}
 });
 import {
@@ -31,7 +38,9 @@ import {
 	Radio,
 	Card,
 	Container,
-	Badge
+	Badge,
+	Box,
+	LinearProgress
 } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
@@ -41,6 +50,7 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
 } from '@material-ui/pickers';
+import Router from 'next/router';
 
 const styles = {
 	button: {
@@ -59,6 +69,9 @@ const styles = {
 	},
 	spacing: {
 		padding: '10px 2px 10px 2px'
+	},
+	gap: {
+		margin: '0px 10px'
 	}
 };
 
@@ -67,28 +80,113 @@ class SetupPage extends React.Component {
 		super(props);
 		this.state = {
 			currentStep: 2,
+			uploadValue: 0,
 			steps: ['Email Verification', 'Add Details', 'Add Image'],
 			isLoading: false,
 			gender: 'male',
 			code: '',
 			dob: new Date('2014-08-18T21:11:54'),
-			roles: [
-				{
-					name: 'Director',
-					id: 'defff'
-				}
-			],
-			studios: [
-				{
-					name: 'Director Sosr',
-					id: 'defff'
-				}
-			]
+			roles: [],
+			studios: [],
+			coverPic: '',
+			profilePic: '',
+			bio: '',
+			city: '',
+			currentRole: '',
+			currentStudio: ''
 		};
 		this.verify = this.verify.bind(this);
+		this.onStudioChange = this.onStudioChange.bind(this);
+		this.onCoverPicChange = this.onCoverPicChange.bind(this);
+		this.onProfilePicChange = this.onProfilePicChange.bind(this);
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		if (localStorage.email_verified == 'true')
+			this.setState({ currentStep: 1 });
+		else this.setState({ currentStep: 0 });
+		var self = this;
+		axios
+			.get(`${process.env.API_BASE_URL}profile/${localStorage.sub}`)
+			.then(res => {
+				if (res.data.Item) Router.replace('/');
+			});
+		axios.get(`${process.env.API_BASE_URL}studios/`).then(res => {
+			self.setState({
+				studios: res.data.Items
+			});
+		});
+	}
+
+	onStudioChange(val) {
+		var self = this;
+		this.setState({ currentStudio: val.id });
+		axios.get(`${process.env.API_BASE_URL}roles/${val.id}`).then(res => {
+			self.setState({
+				roles: res.data.Items
+			});
+		});
+	}
+
+	onCoverPicChange(e) {
+		var self = this;
+		const file = e.target.files[0];
+		var fileName = file.name;
+		var fileArr = fileName.split('.');
+		var photoKey = `C_${localStorage.sub}.${fileArr[fileArr.length - 1]}`;
+
+		Storage.put(photoKey, file, {
+			contentType: `image/${fileArr[fileArr.length - 1]}`,
+			progressCallback(progress) {
+				self.setState({
+					uploadValue: (progress.loaded / progress.total) * 100
+				});
+				console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+			}
+		})
+			.then(result => {
+				Storage.get(photoKey)
+					.then(result =>
+						self.setState({
+							coverPic:
+								'https://s3.ap-south-1.amazonaws.com/images.accounts.sosrgstudios.com/public/' +
+								photoKey
+						})
+					)
+					.catch(err => console.log(err));
+			})
+			.catch(err => console.log(err));
+	}
+
+	onProfilePicChange(e) {
+		var self = this;
+		const file = e.target.files[0];
+		var fileName = file.name;
+		var fileArr = fileName.split('.');
+		var photoKey = `P_${localStorage.sub}.${fileArr[fileArr.length - 1]}`;
+
+		Storage.put(photoKey, file, {
+			contentType: `image/${fileArr[fileArr.length - 1]}`,
+			progressCallback(progress) {
+				self.setState({
+					uploadValue: (progress.loaded / progress.total) * 100
+				});
+				console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+			}
+		})
+			.then(result => {
+				Storage.get(photoKey)
+					.then(result =>
+						self.setState({
+							profilePic:
+								'https://s3.ap-south-1.amazonaws.com/images.accounts.sosrgstudios.com/public/' +
+								photoKey
+						})
+					)
+					.catch(err => console.log(err));
+			})
+			.catch(err => console.log(err));
+	}
 
 	verify() {
 		var self = this;
@@ -112,12 +210,26 @@ class SetupPage extends React.Component {
 			isLoading: true
 		});
 		axios
-			.put(`https://`, {})
+			.post(`${process.env.API_BASE_URL}profile/`, {
+				id: localStorage.sub,
+				name: localStorage.name,
+				email: localStorage.email,
+				phone: localStorage.phone_number,
+				bio: self.state.bio,
+				gender: self.state.gender,
+				dob: self.state.dob.toString(),
+				profilePic: self.state.profilePic,
+				coverPic: self.state.coverPic,
+				profilePic: self.state.profilePic,
+				studio: self.state.currentStudio,
+				role: self.state.currentRole,
+				city: self.state.city
+			})
 			.then(res => {
 				this.setState((state, props) => ({
-					loading: false,
-					currentStep: state.currentStep + 1
+					loading: false
 				}));
+				Router.replace('/');
 			})
 			.catch(err => console.log(err));
 	}
@@ -138,6 +250,12 @@ class SetupPage extends React.Component {
 						})}
 					</Stepper>
 					<Card>
+						{this.state.uploadValue != 0 ? (
+							<LinearProgress
+								variant="determinate"
+								value={this.state.uploadValue}
+							/>
+						) : null}
 						<CardHeader title={this.state.steps[this.state.currentStep]} />
 						<CardContent>
 							{this.state.currentStep == 0 ? (
@@ -161,6 +279,8 @@ class SetupPage extends React.Component {
 										multiline
 										rows={3}
 										rowsMax={3}
+										value={this.state.bio}
+										onChange={e => this.setState({ bio: e.target.value })}
 									/>
 									<FormControl component="fieldset" className={classes.gender}>
 										<FormLabel component="legend">Gender</FormLabel>
@@ -191,6 +311,8 @@ class SetupPage extends React.Component {
 										variant="outlined"
 										fullWidth
 										label="Current City/Locality"
+										value={this.state.city}
+										onChange={e => this.setState({ city: e.target.value })}
 									/>
 									<MuiPickersUtilsProvider utils={DateFnsUtils}>
 										<KeyboardDatePicker
@@ -214,7 +336,7 @@ class SetupPage extends React.Component {
 											options={this.state.studios}
 											getOptionLabel={option => option.name}
 											style={{ width: '100%' }}
-											onChange={(e, d) => console.log(d.id)}
+											onChange={(e, d) => this.onStudioChange(d)}
 											renderInput={params => (
 												<TextField
 													{...params}
@@ -231,7 +353,7 @@ class SetupPage extends React.Component {
 											options={this.state.roles}
 											getOptionLabel={option => option.name}
 											style={{ width: '100%' }}
-											onChange={(e, d) => console.log(d.id)}
+											onChange={(e, d) => this.setState({ currentRole: d.id })}
 											renderInput={params => (
 												<TextField
 													{...params}
@@ -246,10 +368,47 @@ class SetupPage extends React.Component {
 							) : null}
 							{this.state.currentStep == 2 ? (
 								<Container>
-									<Badge badgeContent={4} color="primary">
-										<img src="https://placekitten.com/700/200" />
-									</Badge>
-									<input type="file" hidden />
+									<Box className={classes.spacing}>
+										<input
+											id="cover-upload"
+											type="file"
+											accept="image/*"
+											hidden
+											onChange={e => this.onCoverPicChange(e)}
+										/>
+										<Button
+											variant="outlined"
+											onClick={e =>
+												document.getElementById('cover-upload').click()
+											}
+										>
+											Upload Cover Photo
+										</Button>
+										{this.state.coverPic != '' ? (
+											<img src={this.state.coverPic} />
+										) : null}
+									</Box>
+
+									<Box className={classes.spacing}>
+										<input
+											id="profile-upload"
+											type="file"
+											accept="image/*"
+											hidden
+											onChange={e => this.onProfilePicChange(e)}
+										/>
+										<Button
+											variant="outlined"
+											onClick={e =>
+												document.getElementById('profile-upload').click()
+											}
+										>
+											Upload Profile Photo
+										</Button>
+										{this.state.profilePic != '' ? (
+											<img src={this.state.profilePic} />
+										) : null}
+									</Box>
 								</Container>
 							) : null}
 						</CardContent>
@@ -274,7 +433,7 @@ class SetupPage extends React.Component {
 								<Button
 									variant="contained"
 									color="primary"
-									onClick={e => this.verify()}
+									onClick={e => this.setState({ currentStep: 2 })}
 								>
 									{this.state.isLoading ? (
 										<CircularProgress
@@ -282,7 +441,7 @@ class SetupPage extends React.Component {
 											className={classes.loader}
 										></CircularProgress>
 									) : (
-										'Add Details'
+										'Next'
 									)}
 								</Button>
 							) : null}
@@ -290,7 +449,7 @@ class SetupPage extends React.Component {
 								<Button
 									variant="contained"
 									color="primary"
-									onClick={e => this.verify()}
+									onClick={e => this.addDetails()}
 								>
 									{this.state.isLoading ? (
 										<CircularProgress
@@ -300,6 +459,15 @@ class SetupPage extends React.Component {
 									) : (
 										'Finish Setup'
 									)}
+								</Button>
+							) : null}
+							{this.state.currentStep == 2 ? (
+								<Button
+									variant="outlined"
+									className={classes.gap}
+									onClick={e => this.setState({ currentStep: 1 })}
+								>
+									Previous
 								</Button>
 							) : null}
 						</CardActions>

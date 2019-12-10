@@ -2,6 +2,25 @@ import 'core-js/stable';
 import 'regenerator-runtime';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Amplify, { Storage } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
+import v4 from 'uuid/v4';
+
+Amplify.configure({
+	Auth: {
+		identityPoolId: 'ap-south-1:17f0d95f-24a2-410e-9f52-583a3ebdcf3a',
+		region: 'ap-south-1',
+		userPoolId: 'ap-south-1_pWjBn0W3N',
+		userPoolWebClientId: '3t5o8ktmo83kfksu0ghsjjapcv',
+		authenticationFlowType: 'USER_PASSWORD_AUTH'
+	},
+	Storage: {
+		AWSS3: {
+			bucket: 'posts.connect.sosrgstudios.com', //REQUIRED -  Amazon S3 bucket
+			region: 'ap-south-1' //OPTIONAL -  Amazon service region
+		}
+	}
+});
 import {
 	TextField,
 	Button,
@@ -10,12 +29,11 @@ import {
 	DialogContent,
 	DialogActions,
 	makeStyles,
-	Grid,
-	InputAdornment
+	InputAdornment,
+	CircularProgress
 } from '@material-ui/core';
 import { Link, YouTube } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { func } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
 	margin: {
@@ -31,12 +49,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function CreateSocial(props) {
 	const classes = useStyles();
+	const id = v4();
 	const [description, setDescription] = useState('');
 	const [ytUrl, setYtUrl] = useState('');
 	const [webUrl, setWebUrl] = useState('');
 	const [ytRes, setYtRes] = useState(null);
 	const [webRes, setWebRes] = useState(null);
-	const [files, setFiles] = useState([]);
+	const [file, setFile] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [uploadValue, setUploadValue] = useState(0);
 
 	const handleClickOpen = () => {
 		props.handleOpen(true);
@@ -59,18 +80,46 @@ export default function CreateSocial(props) {
 	};
 
 	const handleFileChange = files => {
-		setFiles(files);
+		var self = this;
+		const file = files[0];
+		var fileName = file.name;
+		var fileArr = fileName.split('.');
+		var photoKey = `C_${id}.${fileArr[fileArr.length - 1]}`;
 
-		if (files.length > 0) {
-			var formData = new FormData();
-			formData.append('key', 'main2.png');
-			formData.append('file', files[0]);
-			axios.post('http://trenndstest.s3.amazonaws.com/', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
+		Storage.put(photoKey, file, {
+			contentType: `image/${fileArr[fileArr.length - 1]}`,
+			progressCallback(progress) {
+				setUploadValue((progress.loaded / progress.total) * 100);
+			}
+		})
+			.then(result => {
+				Storage.get(photoKey)
+					.then(result =>
+						setFile(
+							'https://s3.ap-south-1.amazonaws.com/posts.connect.sosrgstudios.com/public/' +
+								photoKey
+						)
+					)
+					.catch(err => console.log(err));
+			})
+			.catch(err => console.log(err));
+	};
+
+	const upload = () => {
+		setLoading(true);
+		axios
+			.post(`${process.env.API_BASE_URL}social/`, {
+				uploader: localStorage.sub,
+				id: id,
+				description: description,
+				image: file,
+				website: webUrl,
+				youtube: ytUrl
+			})
+			.then(res => {
+				setLoading(false);
+				props.handleOpen(false);
 			});
-		}
 	};
 
 	return (
@@ -94,6 +143,8 @@ export default function CreateSocial(props) {
 					multiline
 					rows="3"
 					fullWidth
+					value={description}
+					onChange={e => setDescription(e.target.value)}
 				/>
 				<DropzoneArea
 					onChange={handleFileChange}
@@ -109,6 +160,8 @@ export default function CreateSocial(props) {
 					fullWidth
 					className={classes.margin}
 					label="Website Link (Optional)"
+					value={webUrl}
+					onChange={e => setWebUrl(e.target.value)}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
@@ -139,8 +192,8 @@ export default function CreateSocial(props) {
 				<Button onClick={handleClose} color="primary">
 					Cancel
 				</Button>
-				<Button onClick={handleClose} color="primary">
-					Create Post
+				<Button onClick={e => upload()} color="primary">
+					{loading ? <CircularProgress size={24} /> : 'Create Social'}
 				</Button>
 			</DialogActions>
 		</Dialog>
