@@ -118,7 +118,7 @@ class LoginPage extends React.Component {
 							<LockOutlined />
 						</Avatar>
 						<Typography component="h1" variant="h5">
-							Login to Sosrg Connect
+							Login to SosrG Connect
 						</Typography>
 						<Container className={classes.form}>
 							<TextField
@@ -185,7 +185,7 @@ class LoginPage extends React.Component {
 									</Link>
 								</Grid>
 								<Grid item>
-									<Link href="#" variant="body2">
+									<Link variant="body2" href="/register">
 										{"Don't have an account? Sign Up"}
 									</Link>
 								</Grid>

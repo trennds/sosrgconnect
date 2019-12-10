@@ -25,19 +25,6 @@ class IndexPage extends React.Component {
 		super(props);
 	}
 
-	// getData() {
-	// 	var self = this;
-	// 	axios.get(`${process.env.API_BASE_URL}posts/`).then(res => {
-	// 		this.setState({
-	// 			posts: res.data.Items
-	// 		});
-	// 	});
-	// }
-
-	// componentWillMount() {
-	// 	this.getData();
-	// }
-
 	componentDidMount() {
 		if (!localStorage.sub) Router.replace('/login');
 	}

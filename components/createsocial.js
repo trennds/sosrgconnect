@@ -50,12 +50,12 @@ const useStyles = makeStyles(theme => ({
 export default function CreateSocial(props) {
 	const classes = useStyles();
 	const id = v4();
-	const [description, setDescription] = useState('');
-	const [ytUrl, setYtUrl] = useState('');
-	const [webUrl, setWebUrl] = useState('');
+	const [description, setDescription] = useState(null);
+	const [ytUrl, setYtUrl] = useState(null);
+	const [webUrl, setWebUrl] = useState(null);
 	const [ytRes, setYtRes] = useState(null);
 	const [webRes, setWebRes] = useState(null);
-	const [file, setFile] = useState([]);
+	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [uploadValue, setUploadValue] = useState(0);
 

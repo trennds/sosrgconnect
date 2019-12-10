@@ -138,7 +138,7 @@ export default function Navbar() {
 						className={classes.title}
 						onClick={() => Router.replace('/')}
 					>
-						Sosrg Connect
+						SosrG Connect
 					</Typography>
 					<div style={{ flex: 'right' }}>
 						<IconButton aria-label="4 pending messages">

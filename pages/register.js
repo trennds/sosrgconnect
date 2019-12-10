@@ -121,7 +121,7 @@ class RegisterPage extends React.Component {
 							<LockOutlined />
 						</Avatar>
 						<Typography component="h1" variant="h5">
-							Register on Sosrg Connect
+							Register on SosrG Connect
 						</Typography>
 						<Container className={classes.form}>
 							<Grid container spacing={2}>
@@ -212,7 +212,7 @@ class RegisterPage extends React.Component {
 							</FormControl>
 							<FormControlLabel
 								control={<Checkbox value="remember" color="primary" />}
-								label="Remember me"
+								label="I agree to all Terms and Conditions"
 							/>
 							<Button
 								type="submit"
@@ -229,14 +229,10 @@ class RegisterPage extends React.Component {
 								)}
 							</Button>
 							<Grid container>
-								<Grid item xs>
-									<Link href="#" variant="body2">
-										Forgot password?
-									</Link>
-								</Grid>
+								<Grid item xs></Grid>
 								<Grid item>
-									<Link href="#" variant="body2">
-										{"Don't have an account? Sign Up"}
+									<Link variant="body2" href="/login">
+										{'Already have and account? Sign In'}
 									</Link>
 								</Grid>
 							</Grid>
