@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Layout from '../components/layout';
 import Post from '../components/post';
+import Router from 'next/router';
 import {
 	Container,
 	Grid,
@@ -36,6 +37,10 @@ class IndexPage extends React.Component {
 	// componentWillMount() {
 	// 	this.getData();
 	// }
+
+	componentDidMount() {
+		if (!localStorage.sub) Router.replace('/login');
+	}
 	render() {
 		const { classes } = this.props;
 
