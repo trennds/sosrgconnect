@@ -196,6 +196,7 @@ class SetupPage extends React.Component {
 
 		Auth.confirmSignUp(localStorage.email, self.state.code)
 			.then(res => {
+				localStorage.email_verified = 'true';
 				this.setState((state, props) => ({
 					loading: false,
 					currentStep: state.currentStep + 1

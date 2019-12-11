@@ -105,6 +105,7 @@ class LoginPage extends React.Component {
 				loading: false
 			});
 			if (err.code === 'UserNotConfirmedException') {
+				localStorage.email = this.state.email;
 				Router.replace('/setup');
 			}
 		}

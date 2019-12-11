@@ -6,6 +6,7 @@ import Post from '../../components/post';
 import Profile from '../../components/profile';
 import { Container, Grid, withStyles } from '@material-ui/core';
 import { Edit, Message, LocationOn } from '@material-ui/icons';
+import Router from 'next/router';
 
 const styles = {
 	container: {
@@ -43,9 +44,11 @@ class ProfilePage extends React.Component {
 		axios
 			.get(`${process.env.API_BASE_URL}profile/${localStorage.sub}`)
 			.then(res => {
-				self.setState({
-					result: res.data.Item
-				});
+				if (res.data.Item)
+					self.setState({
+						result: res.data.Item
+					});
+				else Router.push('/setup');
 			});
 	}
 
