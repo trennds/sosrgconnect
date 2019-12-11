@@ -27,7 +27,7 @@ import { Favorite, Share, Comment, Send } from '@material-ui/icons';
 
 const styles = theme => ({
 	card: {
-		width: 500,
+		width: '100%',
 		margin: theme.spacing(2)
 	},
 	media: {

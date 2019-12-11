@@ -14,8 +14,7 @@ import Job from '../components/job';
 
 const styles = {
 	container: {
-		margin: '100px 10px',
-		padding: '0 30px'
+		margin: '90px 0px'
 	},
 	grid: {
 		justifyContent: 'center'
@@ -34,20 +33,20 @@ class IndexPage extends React.Component {
 
 		return (
 			<Layout>
-				<Container className={classes.container}>
-					<Grid container spacing={1} justify="center">
+				<Grid container spacing={0} className={classes.container}>
+					<Grid item lg={3}></Grid>
+					<Grid item lg={6}>
 						{this.props.posts.length > 0 ? (
-							<Grid item className={classes.grid}>
-								{this.props.posts.map(v => {
-									if (v.type == 'social') return <Post data={v} key={v.id} />;
-									if (v.type == 'job') return <Job data={v} key={v.id} />;
-								})}
-							</Grid>
+							this.props.posts.map(v => {
+								if (v.type == 'social') return <Post data={v} key={v.id} />;
+								if (v.type == 'job') return <Job data={v} key={v.id} />;
+							})
 						) : (
 							<CircularProgress />
 						)}
 					</Grid>
-				</Container>
+					<Grid item lg={3}></Grid>
+				</Grid>
 			</Layout>
 		);
 	}

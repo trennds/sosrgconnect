@@ -37,7 +37,7 @@ class Layout extends React.Component {
 				<Head>
 					<meta
 						name="viewport"
-						content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+						content="width=device-width, initial-scale=1, shrink-to-fit=no"
 					/>
 					<link
 						rel="stylesheet"
@@ -50,10 +50,7 @@ class Layout extends React.Component {
 					<script src="https://sdk.amazonaws.com/js/aws-sdk-2.584.0.min.js"></script>
 				</Head>
 				<Navbar />
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-					{this.props.children}
-				</main>
+				<main>{this.props.children}</main>
 				{Copyright()}
 			</div>
 		);
