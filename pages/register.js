@@ -80,7 +80,8 @@ class RegisterPage extends React.Component {
 			email: '',
 			password: '',
 			loading: false,
-			showPassword: false
+			showPassword: false,
+			err: ''
 		};
 		this.onSubmit = this.onSubmit.bind(this);
 	}
@@ -105,7 +106,12 @@ class RegisterPage extends React.Component {
 				});
 				Router.push('/setup');
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				console.log(err);
+				this.setState({
+					err: err.message
+				});
+			});
 	}
 
 	render() {
@@ -124,6 +130,7 @@ class RegisterPage extends React.Component {
 							Register on SosrG Connect
 						</Typography>
 						<Container className={classes.form}>
+							<Typography color="error">{this.state.err}</Typography>
 							<Grid container spacing={2}>
 								<Grid item xs={6}>
 									<TextField

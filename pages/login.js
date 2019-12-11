@@ -77,7 +77,8 @@ class LoginPage extends React.Component {
 			email: '',
 			password: '',
 			showPassword: false,
-			loading: false
+			loading: false,
+			err: ''
 		};
 		this.login = this.login.bind(this);
 	}
@@ -99,6 +100,10 @@ class LoginPage extends React.Component {
 				Router.replace('/');
 			});
 		} catch (err) {
+			this.setState({
+				err: err.message,
+				loading: false
+			});
 			if (err.code === 'UserNotConfirmedException') {
 				Router.replace('/setup');
 			}
@@ -121,6 +126,7 @@ class LoginPage extends React.Component {
 							Login to SosrG Connect
 						</Typography>
 						<Container className={classes.form}>
+							<Typography color="error">{this.state.err}</Typography>
 							<TextField
 								variant="outlined"
 								margin="normal"
