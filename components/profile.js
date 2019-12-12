@@ -15,6 +15,7 @@ import {
 	makeStyles
 } from '@material-ui/core';
 import { Edit, Message, LocationOn } from '@material-ui/icons';
+import Link from 'next/link';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -80,10 +81,14 @@ export default function Profile(props) {
 						<Message className={classes.spacing}></Message>
 						Message
 					</Button>
-					<Button color="primary">
-						<Edit className={classes.spacing}></Edit>
-						Edit Profile
-					</Button>
+					{props.isEditable ? (
+						<Link href="/edit">
+							<Button color="primary">
+								<Edit className={classes.spacing}></Edit>
+								Edit Profile
+							</Button>
+						</Link>
+					) : null}
 				</CardActions>
 			</Card>
 		);

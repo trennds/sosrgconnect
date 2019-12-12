@@ -27,6 +27,11 @@ class IndexPage extends React.Component {
 
 	componentDidMount() {
 		if (!localStorage.sub) Router.replace('/login');
+		axios
+			.get(`${process.env.API_BASE_URL}profile/${localStorage.sub}`)
+			.then(res => {
+				if (!res.data.Item) Router.push('/setup');
+			});
 	}
 	render() {
 		const { classes } = this.props;

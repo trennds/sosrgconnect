@@ -24,6 +24,7 @@ import {
 	Divider
 } from '@material-ui/core';
 import { Favorite, Share, Comment, Send } from '@material-ui/icons';
+import Link from 'next/link';
 
 const styles = theme => ({
 	card: {
@@ -142,10 +143,12 @@ class Post extends React.Component {
 
 		return (
 			<Card className={classes.card}>
-				<CardHeader
-					avatar={<Avatar className={classes.avatar}>R</Avatar>}
-					title={this.state.name}
-				></CardHeader>
+				<Link href="/profile/[id]" as={`/profile/${this.props.data.uploader}`}>
+					<CardHeader
+						avatar={<Avatar className={classes.avatar}>R</Avatar>}
+						title={this.state.name}
+					></CardHeader>
+				</Link>
 				<CardMedia
 					image={this.props.data.image}
 					className={classes.media}

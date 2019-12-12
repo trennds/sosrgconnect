@@ -30,23 +30,9 @@ const styles = {
 	}
 };
 
-class ProfilePage extends React.Component {
+class ProfileIdPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			result: null
-		};
-	}
-
-	componentDidMount() {
-		var self = this;
-		axios
-			.get(`${process.env.API_BASE_URL}profile/${localStorage.sub}`)
-			.then(res => {
-				self.setState({
-					result: res.data.Item
-				});
-			});
 	}
 
 	render() {
@@ -55,7 +41,10 @@ class ProfilePage extends React.Component {
 		return (
 			<Layout>
 				<Container className={classes.container}>
-					<Profile data={this.state.result} />
+					<Profile
+						data={this.props.data}
+						isEditable={localStorage.sub == this.props.data.id}
+					/>
 				</Container>
 				{/* <Container>
 					<Grid container spacing={1} justify="center">
@@ -69,8 +58,14 @@ class ProfilePage extends React.Component {
 	}
 }
 
-ProfilePage.propTypes = {
+ProfileIdPage.getInitialProps = async function(context) {
+	const { id } = context.query;
+	var res = await axios.get(`${process.env.API_BASE_URL}profile/${id}`);
+	return { data: res.data.Item };
+};
+
+ProfileIdPage.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ProfilePage);
+export default withStyles(styles)(ProfileIdPage);

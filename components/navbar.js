@@ -26,12 +26,14 @@ import {
 	Notifications,
 	Message,
 	BusinessCenter,
-	Feedback
+	Feedback,
+	Edit
 } from '@material-ui/icons';
 import CreatePost from './createsocial';
 import CreateWork from './creatework';
 import CreateJob from './createjob';
 import FeedbackForm from './feedbackform';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -146,15 +148,17 @@ export default function Navbar() {
 								<Notifications color="primary" className={classes.icon} />
 							</Badge>
 						</IconButton>
-						<IconButton
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							color="inherit"
-							onClick={() => Router.push('/profile')}
-						>
-							<AccountCircle />
-						</IconButton>
+						<Link href="/profile/" as={`/profile/`}>
+							<IconButton
+								aria-label="account of current user"
+								aria-controls="menu-appbar"
+								aria-haspopup="true"
+								color="inherit"
+								onClick={() => Router.push('/profile')}
+							>
+								<AccountCircle />
+							</IconButton>
+						</Link>
 					</div>
 				</Toolbar>
 			</AppBar>
@@ -192,6 +196,12 @@ export default function Navbar() {
 							<Message />
 						</ListItemIcon>
 						<ListItemText primary="Messages" />
+					</ListItem>
+					<ListItem button onClick={() => Router.push('/edit')}>
+						<ListItemIcon>
+							<Edit />
+						</ListItemIcon>
+						<ListItemText primary="Edit Profile" />
 					</ListItem>
 					<ListItem button onClick={e => setFeedback(true)}>
 						<ListItemIcon>

@@ -58,7 +58,7 @@ class ProfilePage extends React.Component {
 		return (
 			<Layout>
 				<Container className={classes.container}>
-					<Profile data={this.state.result} />
+					<Profile data={this.state.result} isEditable />
 				</Container>
 				{/* <Container>
 					<Grid container spacing={1} justify="center">
