@@ -40,7 +40,8 @@ import {
 	Container,
 	Badge,
 	Box,
-	LinearProgress
+	LinearProgress,
+	Typography
 } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
@@ -79,7 +80,7 @@ class SetupPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 2,
+			currentStep: 0,
 			uploadValue: 0,
 			steps: ['Email Verification', 'Add Details', 'Add Image'],
 			isLoading: false,
@@ -93,7 +94,8 @@ class SetupPage extends React.Component {
 			bio: '',
 			city: '',
 			currentRole: '',
-			currentStudio: ''
+			currentStudio: '',
+			err: ''
 		};
 		this.verify = this.verify.bind(this);
 		this.onStudioChange = this.onStudioChange.bind(this);
@@ -102,6 +104,8 @@ class SetupPage extends React.Component {
 	}
 
 	componentDidMount() {
+		if (!localStorage.email) Router.replace('/login');
+
 		if (localStorage.email_verified == 'true')
 			this.setState({ currentStep: 1 });
 		else this.setState({ currentStep: 0 });
@@ -111,7 +115,7 @@ class SetupPage extends React.Component {
 			.then(res => {
 				if (res.data.Item) Router.replace('/');
 			});
-		axios.get(`${process.env.API_BASE_URL}studios/`).then(res => {
+		axios.get(`${process.env.API_BASE_URL}studio/`).then(res => {
 			self.setState({
 				studios: res.data.Items
 			});
@@ -121,7 +125,7 @@ class SetupPage extends React.Component {
 	onStudioChange(val) {
 		var self = this;
 		this.setState({ currentStudio: val.id });
-		axios.get(`${process.env.API_BASE_URL}roles/${val.id}`).then(res => {
+		axios.get(`${process.env.API_BASE_URL}role/${val.id}`).then(res => {
 			self.setState({
 				roles: res.data.Items
 			});
@@ -188,6 +192,14 @@ class SetupPage extends React.Component {
 			.catch(err => console.log(err));
 	}
 
+	resend() {
+		Auth.resendSignUp(localStorage.email)
+			.then(res => {
+				alert("Verification Code sent to your email.")
+			})
+			.catch(err => alert("Code sending failed"));
+	}
+
 	verify() {
 		var self = this;
 		this.setState({
@@ -198,11 +210,16 @@ class SetupPage extends React.Component {
 			.then(res => {
 				localStorage.email_verified = 'true';
 				this.setState((state, props) => ({
-					loading: false,
+					isLoading: false,
 					currentStep: state.currentStep + 1
 				}));
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				self.setState({
+					isLoading: false,
+					err: err.message
+				});
+			});
 	}
 
 	addDetails() {
@@ -228,7 +245,7 @@ class SetupPage extends React.Component {
 			})
 			.then(res => {
 				this.setState((state, props) => ({
-					loading: false
+					isLoading: false
 				}));
 				Router.replace('/');
 			})
@@ -260,15 +277,20 @@ class SetupPage extends React.Component {
 						<CardHeader title={this.state.steps[this.state.currentStep]} />
 						<CardContent>
 							{this.state.currentStep == 0 ? (
-								<TextField
-									type="text"
-									variant="outlined"
-									fullWidth
-									label="Verification Code"
-									value={this.state.code}
-									onChange={e => this.setState({ code: e.target.value })}
-									helperText="The code sent to your registered email."
-								/>
+								<Box>
+									<Typography color="error" className={classes.spacing}>
+										{this.state.err}
+									</Typography>
+									<TextField
+										type="text"
+										variant="outlined"
+										fullWidth
+										label="Verification Code"
+										value={this.state.code}
+										onChange={e => this.setState({ code: e.target.value })}
+										helperText="The code sent to your registered email."
+									/>
+								</Box>
 							) : null}
 							{this.state.currentStep == 1 ? (
 								<div>
@@ -415,20 +437,29 @@ class SetupPage extends React.Component {
 						</CardContent>
 						<CardActions className={classes.bar}>
 							{this.state.currentStep == 0 ? (
-								<Button
-									variant="contained"
-									color="primary"
-									onClick={e => this.verify()}
-								>
-									{this.state.isLoading ? (
-										<CircularProgress
-											size={24}
-											className={classes.loader}
-										></CircularProgress>
-									) : (
-										'Verify and Next'
-									)}
-								</Button>
+								<span>
+									<Button
+										color="primary"
+										className={classes.gap}
+										onClick={e => this.resend()}
+									>
+										Resend Code
+									</Button>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={e => this.verify()}
+									>
+										{this.state.isLoading ? (
+											<CircularProgress
+												size={24}
+												className={classes.loader}
+											></CircularProgress>
+										) : (
+											'Verify and Next'
+										)}
+									</Button>
+								</span>
 							) : null}
 							{this.state.currentStep == 1 ? (
 								<Button

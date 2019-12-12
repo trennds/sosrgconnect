@@ -104,7 +104,7 @@ class RegisterPage extends React.Component {
 				this.setState({
 					loading: false
 				});
-				Router.push('/setup');
+				Router.push('/login');
 			})
 			.catch(err => {
 				console.log(err);
