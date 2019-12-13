@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Layout from '../../components/layout';
 import Post from '../../components/post';
+import Job from '../../components/job';
+import Work from '../../components/work';
 import Profile from '../../components/profile';
-import { Container, Grid, withStyles } from '@material-ui/core';
+import {
+	Container,
+	Grid,
+	withStyles,
+	CircularProgress
+} from '@material-ui/core';
 import { Edit, Message, LocationOn } from '@material-ui/icons';
 import Router from 'next/router';
 
@@ -35,7 +42,8 @@ class ProfilePage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			result: null
+			result: null,
+			posts: []
 		};
 	}
 
@@ -50,6 +58,13 @@ class ProfilePage extends React.Component {
 					});
 				else Router.push('/setup');
 			});
+		axios
+			.get(`${process.env.API_BASE_URL}post/${localStorage.sub}`)
+			.then(res => {
+				self.setState({
+					posts: res.data.Items
+				});
+			});
 	}
 
 	render() {
@@ -60,13 +75,21 @@ class ProfilePage extends React.Component {
 				<Container className={classes.container}>
 					<Profile data={this.state.result} isEditable />
 				</Container>
-				{/* <Container>
+				<Container>
 					<Grid container spacing={1} justify="center">
 						<Grid item className={classes.center}>
-							<Post />
+							{this.state.posts.length > 0 ? (
+								this.state.posts.map(v => {
+									if (v.type == 'social') return <Post data={v} key={v.id} />;
+									if (v.type == 'job') return <Job data={v} key={v.id} />;
+									if (v.type == 'work') return <Work data={v} key={v.id} />;
+								})
+							) : (
+								<CircularProgress />
+							)}
 						</Grid>
 					</Grid>
-				</Container> */}
+				</Container>
 			</Layout>
 		);
 	}

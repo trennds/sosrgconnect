@@ -21,9 +21,18 @@ import {
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
-	Divider
+	Divider,
+	Button
 } from '@material-ui/core';
-import { Favorite, Share, Comment, Send, LocationOn } from '@material-ui/icons';
+import {
+	Favorite,
+	Share,
+	Comment,
+	Send,
+	LocationOn,
+	Work
+} from '@material-ui/icons';
+import JobProposal from './jobproposal';
 
 const styles = theme => ({
 	card: {
@@ -36,6 +45,9 @@ const styles = theme => ({
 	},
 	avatar: {
 		backgroundColor: red[500]
+	},
+	spacing: {
+		margin: '0px 5px 0px 2px'
 	},
 	expand: {
 		transform: 'rotate(0deg)',
@@ -114,7 +126,8 @@ class Job extends React.Component {
 		super(props);
 		this.state = {
 			isExpanded: false,
-			name: ''
+			name: '',
+			open: false
 		};
 
 		this.handleExpandClick = this.handleExpandClick.bind(this);
@@ -179,9 +192,9 @@ class Job extends React.Component {
 					</Typography>
 				</CardContent>
 				<CardActions>
-					<IconButton>
-						<Favorite />
-					</IconButton>
+					<Button color="inherit" onClick={e => this.setState({ open: true })}>
+						<Work className={classes.spacing} /> Apply for Job
+					</Button>
 					<IconButton>
 						<Share />
 					</IconButton>
@@ -218,6 +231,11 @@ class Job extends React.Component {
 						</Grid>
 					</CardContent>
 				</Collapse>
+				<JobProposal
+					isOpen={this.state.open}
+					id={this.props.data.id}
+					handleOpen={val => this.setState({ open: val })}
+				/>
 			</Card>
 		);
 	}

@@ -4,7 +4,14 @@ import axios from 'axios';
 import Layout from '../../components/layout';
 import Post from '../../components/post';
 import Profile from '../../components/profile';
-import { Container, Grid, withStyles } from '@material-ui/core';
+import Job from '../../components/job';
+import Work from '../../components/work';
+import {
+	Container,
+	Grid,
+	withStyles,
+	CircularProgress
+} from '@material-ui/core';
 import { Edit, Message, LocationOn } from '@material-ui/icons';
 
 const styles = {
@@ -46,13 +53,21 @@ class ProfileIdPage extends React.Component {
 						isEditable={localStorage.sub == this.props.data.id}
 					/>
 				</Container>
-				{/* <Container>
+				<Container>
 					<Grid container spacing={1} justify="center">
 						<Grid item className={classes.center}>
-							<Post />
+							{this.props.posts.length > 0 ? (
+								this.props.posts.map(v => {
+									if (v.type == 'social') return <Post data={v} key={v.id} />;
+									if (v.type == 'job') return <Job data={v} key={v.id} />;
+									if (v.type == 'work') return <Work data={v} key={v.id} />;
+								})
+							) : (
+								<CircularProgress />
+							)}
 						</Grid>
 					</Grid>
-				</Container> */}
+				</Container>
 			</Layout>
 		);
 	}
@@ -61,7 +76,8 @@ class ProfileIdPage extends React.Component {
 ProfileIdPage.getInitialProps = async function(context) {
 	const { id } = context.query;
 	var res = await axios.get(`${process.env.API_BASE_URL}profile/${id}`);
-	return { data: res.data.Item };
+	var res1 = await axios.get(`${process.env.API_BASE_URL}post/${id}`);
+	return { data: res.data.Item, posts: res1.data.Items };
 };
 
 ProfileIdPage.propTypes = {
