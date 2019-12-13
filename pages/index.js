@@ -11,6 +11,7 @@ import {
 	CircularProgress
 } from '@material-ui/core';
 import Job from '../components/job';
+import Work from '../components/work';
 
 const styles = {
 	container: {
@@ -45,6 +46,7 @@ class IndexPage extends React.Component {
 							this.props.posts.map(v => {
 								if (v.type == 'social') return <Post data={v} key={v.id} />;
 								if (v.type == 'job') return <Job data={v} key={v.id} />;
+								if (v.type == 'work') return <Work data={v} key={v.id} />;
 							})
 						) : (
 							<CircularProgress />

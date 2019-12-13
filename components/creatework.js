@@ -12,7 +12,8 @@ import {
 	DialogContentText,
 	DialogActions,
 	InputAdornment,
-	Grid
+	Grid,
+	CircularProgress
 } from '@material-ui/core';
 import { LocationOn } from '@material-ui/icons';
 import NumberFormat from 'react-number-format';
@@ -45,6 +46,11 @@ NumberFormatCustom.propTypes = {
 
 export default function CreateWork(props) {
 	const [amount, setAmount] = useState('1000');
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [experience, setExperience] = useState('');
+	const [location, setLocation] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const handleClickOpen = () => {
 		props.handleOpen(true);
@@ -52,6 +58,26 @@ export default function CreateWork(props) {
 
 	const handleClose = () => {
 		props.handleOpen(false);
+	};
+
+	const onSubmit = () => {
+		setLoading(true);
+		axios
+			.post(`${process.env.API_BASE_URL}work/`, {
+				uploader: localStorage.sub,
+				title: title,
+				description: description,
+				experience: experience,
+				amount: amount,
+				location: location
+			})
+			.then(res => {
+				setLoading(false);
+				handleClose();
+			})
+			.catch(err => {
+				setLoading(false);
+			});
 	};
 
 	return (
@@ -69,6 +95,8 @@ export default function CreateWork(props) {
 					label="Work/Project Title"
 					type="text"
 					fullWidth
+					value={title}
+					onChange={e => setTitle(e.target.value)}
 				/>
 				<TextField
 					margin="dense"
@@ -78,6 +106,8 @@ export default function CreateWork(props) {
 					fullWidth
 					multiline
 					rows={3}
+					value={description}
+					onChange={e => setDescription(e.target.value)}
 				/>
 				<Grid container spacing={2}>
 					<Grid item>
@@ -96,6 +126,8 @@ export default function CreateWork(props) {
 						<TextField
 							margin="dense"
 							label="Work/Project Location"
+							value={location}
+							onChange={e => setLocation(e.target.value)}
 							InputProps={{
 								startAdornment: (
 									<InputAdornment position="start">
@@ -114,14 +146,16 @@ export default function CreateWork(props) {
 					fullWidth
 					multiline
 					rows={3}
+					value={experience}
+					onChange={e => setExperience(e.target.value)}
 				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary">
 					Cancel
 				</Button>
-				<Button onClick={handleClose} color="primary">
-					Create Work
+				<Button onClick={onSubmit} color="primary">
+					{loading ? <CircularProgress size={24} /> : 'Create Post'}
 				</Button>
 			</DialogActions>
 		</Dialog>

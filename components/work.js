@@ -109,7 +109,7 @@ function Comments() {
 	);
 }
 
-class Job extends React.Component {
+class Work extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -157,7 +157,7 @@ class Job extends React.Component {
 						</Avatar>
 					}
 					title={this.state.name}
-					subheader="Job Required"
+					subheader="Work required"
 				></CardHeader>
 				<CardContent>
 					<Typography variant="h3" color="textSecondary">
@@ -175,7 +175,7 @@ class Job extends React.Component {
 						Experience Required -{this.props.data.experience}
 					</Typography>
 					<Typography variant="h6" color="textSecondary">
-						Rs. {this.numberWithCommas(this.props.data.salary)}/-
+						Rs. {this.numberWithCommas(this.props.data.amount)}/-
 					</Typography>
 				</CardContent>
 				<CardActions>
@@ -223,8 +223,8 @@ class Job extends React.Component {
 	}
 }
 
-Job.propTypes = {
+Work.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Job);
+export default withStyles(styles)(Work);

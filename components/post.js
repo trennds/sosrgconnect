@@ -145,7 +145,11 @@ class Post extends React.Component {
 			<Card className={classes.card}>
 				<Link href="/profile/[id]" as={`/profile/${this.props.data.uploader}`}>
 					<CardHeader
-						avatar={<Avatar className={classes.avatar}>R</Avatar>}
+						avatar={
+							<Avatar className={classes.avatar}>
+								{this.state.name.charAt(0).toUpperCase()}
+							</Avatar>
+						}
 						title={this.state.name}
 					></CardHeader>
 				</Link>
