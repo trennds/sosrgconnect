@@ -81,7 +81,14 @@ class ProfilePage extends React.Component {
 							{this.state.posts.length > 0 ? (
 								this.state.posts.map(v => {
 									if (v.type == 'social') return <Post data={v} key={v.id} />;
-									if (v.type == 'job') return <Job data={v} key={v.id} />;
+									if (v.type == 'job')
+										return (
+											<Job
+												data={v}
+												key={v.id}
+												isOwner={localStorage.sub == v.uploader}
+											/>
+										);
 									if (v.type == 'work') return <Work data={v} key={v.id} />;
 								})
 							) : (

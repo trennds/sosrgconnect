@@ -8,7 +8,8 @@ import {
 	Container,
 	Grid,
 	withStyles,
-	CircularProgress
+	CircularProgress,
+	LinearProgress
 } from '@material-ui/core';
 import Job from '../components/job';
 import Work from '../components/work';
@@ -19,11 +20,20 @@ const styles = {
 	},
 	grid: {
 		justifyContent: 'center'
+	},
+	spinner: {
+		position: 'absolute',
+		left: '50%',
+		right: '50%',
+		transform: 'translate(-50%, -50%)'
 	}
 };
 class IndexPage extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			loaded: false
+		};
 	}
 
 	componentDidMount() {
@@ -33,29 +43,41 @@ class IndexPage extends React.Component {
 			.then(res => {
 				if (!res.data.Item) Router.push('/setup');
 			});
+		this.setState({
+			loaded: true
+		});
 	}
 	render() {
 		const { classes } = this.props;
 
-		return (
-			<Layout>
-				<Grid container spacing={0} className={classes.container}>
-					<Grid item lg={3}></Grid>
-					<Grid item lg={6}>
-						{this.props.posts.length > 0 ? (
-							this.props.posts.map(v => {
-								if (v.type == 'social') return <Post data={v} key={v.id} />;
-								if (v.type == 'job') return <Job data={v} key={v.id} />;
-								if (v.type == 'work') return <Work data={v} key={v.id} />;
-							})
-						) : (
-							<CircularProgress />
-						)}
+		if (this.state.loaded)
+			return (
+				<Layout>
+					<Grid container spacing={0} className={classes.container}>
+						<Grid item lg={3}></Grid>
+						<Grid item lg={6}>
+							{this.props.posts.length > 0 ? (
+								this.props.posts.map(v => {
+									if (v.type == 'social') return <Post data={v} key={v.id} />;
+									if (v.type == 'job')
+										return (
+											<Job
+												data={v}
+												key={v.id}
+												isOwner={localStorage.sub == v.uploader}
+											/>
+										);
+									if (v.type == 'work') return <Work data={v} key={v.id} />;
+								})
+							) : (
+								<CircularProgress />
+							)}
+						</Grid>
+						<Grid item lg={3}></Grid>
 					</Grid>
-					<Grid item lg={3}></Grid>
-				</Grid>
-			</Layout>
-		);
+				</Layout>
+			);
+		else return <LinearProgress />;
 	}
 }
 

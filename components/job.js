@@ -22,7 +22,8 @@ import {
 	ListItemAvatar,
 	ListItemText,
 	Divider,
-	Button
+	Button,
+	LinearProgress
 } from '@material-ui/core';
 import {
 	Favorite,
@@ -64,61 +65,47 @@ const styles = theme => ({
 	}
 });
 
-function Comments() {
-	return (
-		<List>
-			<ListItem alignItems="flex-start">
-				<ListItemAvatar>
-					<Avatar alt="Travis Howard">R</Avatar>
-				</ListItemAvatar>
-				<ListItemText
-					primary="Brunch this weekend?"
-					secondary={
-						<React.Fragment>
-							<Typography component="span" variant="body2" color="textPrimary">
-								Ali Connors
-							</Typography>
-							{" — I'll be in your neighborhood doing errands this…"}
-						</React.Fragment>
-					}
-				/>
-			</ListItem>
-			<Divider variant="inset" component="li" />
-			<ListItem alignItems="flex-start">
-				<ListItemAvatar>
-					<Avatar alt="Travis Howard">R</Avatar>
-				</ListItemAvatar>
-				<ListItemText
-					primary="Summer BBQ"
-					secondary={
-						<React.Fragment>
-							<Typography component="span" variant="body2" color="textPrimary">
-								to Scott, Alex, Jennifer
-							</Typography>
-							{" — Wish I could come, but I'm out of town this…"}
-						</React.Fragment>
-					}
-				/>
-			</ListItem>
-			<Divider variant="inset" component="li" />
-			<ListItem alignItems="flex-start">
-				<ListItemAvatar>
-					<Avatar alt="Travis Howard">R</Avatar>
-				</ListItemAvatar>
-				<ListItemText
-					primary="Oui Oui"
-					secondary={
-						<React.Fragment>
-							<Typography component="span" variant="body2" color="textPrimary">
-								Sandra Adams
-							</Typography>
-							{' — Do you have Paris recommendations? Have you ever…'}
-						</React.Fragment>
-					}
-				/>
-			</ListItem>
-		</List>
-	);
+function Comments(data) {
+	if (data.length > 0)
+		return (
+			<List>
+				{data.map(v => (
+					<div>
+						<ListItem alignItems="flex-start">
+							<ListItemAvatar>
+								<Avatar alt="Travis Howard">R</Avatar>
+							</ListItemAvatar>
+							<ListItemText
+								primary={v.senderName}
+								secondary={
+									<React.Fragment>
+										<Typography variant="body2" color="textPrimary">
+											Reason- {v.reason}
+										</Typography>
+										<Typography variant="body2" color="textPrimary">
+											Experiences- {v.experience}
+										</Typography>
+										<Typography variant="body2" color="textPrimary">
+											Contact Email- {v.senderEmail}
+										</Typography>
+										<Typography variant="body1">
+											<a
+												href={`https://docs.google.com/gview?url=${v.resume}&embedded=true`}
+												target="_blank"
+											>
+												Open Resume
+											</a>
+										</Typography>
+									</React.Fragment>
+								}
+							/>
+						</ListItem>
+						<Divider variant="inset" component="li" />
+					</div>
+				))}
+			</List>
+		);
+	else return <LinearProgress />;
 }
 
 class Job extends React.Component {
@@ -127,7 +114,8 @@ class Job extends React.Component {
 		this.state = {
 			isExpanded: false,
 			name: '',
-			open: false
+			open: false,
+			proposals: []
 		};
 
 		this.handleExpandClick = this.handleExpandClick.bind(this);
@@ -142,6 +130,26 @@ class Job extends React.Component {
 					name: res.data.Item.name
 				});
 			});
+		if (this.props.isOwner) {
+			axios
+				.get(`${process.env.API_BASE_URL}proposal/${self.props.data.id}`)
+				.then(res => {
+					for (let index = 0; index < res.data.Items.length; index++) {
+						axios
+							.get(
+								`${process.env.API_BASE_URL}profile/${res.data.Items[index].sender}`
+							)
+							.then(val => {
+								let temp = res.data.Items[index];
+								temp.senderName = val.data.Item.name;
+								temp.senderEmail = val.data.Item.email;
+								self.setState((state, props) => ({
+									proposals: [...state.proposals, temp]
+								}));
+							});
+					}
+				});
+		}
 	}
 
 	handleExpandClick() {
@@ -192,24 +200,29 @@ class Job extends React.Component {
 					</Typography>
 				</CardContent>
 				<CardActions>
-					<Button color="inherit" onClick={e => this.setState({ open: true })}>
-						<Work className={classes.spacing} /> Apply for Job
-					</Button>
+					{!this.props.isOwner ? (
+						<Button
+							color="inherit"
+							onClick={e => this.setState({ open: true })}
+						>
+							<Work className={classes.spacing} /> Apply for Job
+						</Button>
+					) : null}
 					<IconButton>
 						<Share />
 					</IconButton>
-					<IconButton
+					<Button
 						className={clsx(classes.expand, {})}
 						onClick={this.handleExpandClick}
 						aria-expanded={this.state.isExpanded}
 						aria-label="show more"
 					>
-						<Comment />
-					</IconButton>
+						<Comment className={classes.spacing} /> View Proposals
+					</Button>
 				</CardActions>
 				<Collapse in={this.state.isExpanded} timeout="auto" unmountOnExit>
 					<CardContent>
-						{Comments()}
+						{Comments(this.state.proposals)}
 						<Grid container spacing={2}>
 							<Grid xs={10}>
 								<TextField
