@@ -184,7 +184,7 @@ class Post extends React.Component {
 					<CardContent>
 						{Comments()}
 						<Grid container spacing={2}>
-							<Grid xs={10}>
+							<Grid item xs={10}>
 								<TextField
 									variant="standard"
 									label="Enter your comment"
