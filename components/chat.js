@@ -1,4 +1,3 @@
-import 'react-chat-elements/dist/main.css';
 import styled from 'styled-components';
 import { Container, Grid, makeStyles, NoSsr, Box } from '@material-ui/core';
 import {} from '@material-ui/icons';

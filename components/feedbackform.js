@@ -40,13 +40,14 @@ export default function FeedbackForm(props) {
 	const onSend = () => {
 		setLoading(true);
 		axios
-			.post(`https://dummy.com`, {
+			.post(`${process.env.API_BASE_URL}feedback/`, {
+				sender: localStorage.sub,
 				message: description,
 				rating: value
 			})
 			.then(res => {
 				setLoading(false);
-				res;
+				handleClose();
 			})
 			.catch(err => {
 				setLoading(false);
@@ -81,12 +82,14 @@ export default function FeedbackForm(props) {
 					multiline
 					rows="3"
 					fullWidth
+					value={description}
+					onChange={e => setDescription(e.target.value)}
 				/>
 				<Typography>Rating</Typography>
 				<Rating
 					name="hover-side"
 					value={value}
-					onChang={(event, newValue) => {
+					onChange={(event, newValue) => {
 						setValue(newValue);
 					}}
 				/>

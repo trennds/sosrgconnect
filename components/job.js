@@ -23,7 +23,7 @@ import {
 	ListItemText,
 	Divider
 } from '@material-ui/core';
-import { Favorite, Share, Comment, Send } from '@material-ui/icons';
+import { Favorite, Share, Comment, Send, LocationOn } from '@material-ui/icons';
 
 const styles = theme => ({
 	card: {
@@ -151,11 +151,18 @@ class Job extends React.Component {
 						{this.props.data.title}
 					</Typography>
 					<hr />
+					<Typography variant="h6" color="textSecondary">
+						<LocationOn />
+						{this.props.data.location}
+					</Typography>
 					<Typography variant="body1" color="textSecondary" component="p">
 						{this.props.data.description}
 					</Typography>
 					<Typography variant="body1" color="textSecondary" component="p">
-						{this.props.data.experience}
+						Experience Required -{this.props.data.experience}
+					</Typography>
+					<Typography variant="h6" color="textSecondary">
+						Rs. {this.props.data.salary}/-
 					</Typography>
 				</CardContent>
 				<CardActions>

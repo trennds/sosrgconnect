@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
 
-export default class MyApp extends App {
+class MyApp extends App {
 	componentDidMount() {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
@@ -33,3 +33,6 @@ export default class MyApp extends App {
 		);
 	}
 }
+
+const msDelay = 300;
+export default MyApp;
