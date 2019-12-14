@@ -219,11 +219,11 @@ class SetupPage extends React.Component {
 
 		Auth.confirmSignUp(localStorage.email, self.state.code)
 			.then(res => {
-				localStorage.email_verified = 'true';
 				this.setState((state, props) => ({
-					isLoading: false,
-					currentStep: state.currentStep + 1
+					isLoading: false
 				}));
+				localStorage.clear();
+				Router.push('/login');
 			})
 			.catch(err => {
 				self.setState({
@@ -455,6 +455,14 @@ class SetupPage extends React.Component {
 							) : null}
 						</CardContent>
 						<CardActions className={classes.bar}>
+							<Button
+								variant="outlined"
+								color="primary"
+								className={classes.gap}
+								onClick={e => Router.push('/login')}
+							>
+								Log Out
+							</Button>
 							{this.state.currentStep == 0 ? (
 								<span>
 									<Button

@@ -83,6 +83,10 @@ class LoginPage extends React.Component {
 		this.login = this.login.bind(this);
 	}
 
+	componentDidMount() {
+		localStorage.clear();
+	}
+
 	async login() {
 		this.setState({
 			loading: true
@@ -97,7 +101,12 @@ class LoginPage extends React.Component {
 				this.setState({
 					loading: false
 				});
-				Router.replace('/');
+				axios
+					.get(`${process.env.API_BASE_URL}profile/${localStorage.sub}`)
+					.then(res => {
+						if (res.data.Item) Router.replace('/');
+						else Router.push('/setup');
+					});
 			});
 		} catch (err) {
 			this.setState({
