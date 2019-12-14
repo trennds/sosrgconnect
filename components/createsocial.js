@@ -84,7 +84,19 @@ export default function CreateSocial(props) {
 		const file = files[0];
 		var fileName = file.name;
 		var fileArr = fileName.split('.');
-		var photoKey = `P_${id}.${fileArr[fileArr.length - 1]}`;
+		var photoKey = `S_${id}.${fileArr[fileArr.length - 1]}`;
+
+		Auth.configure({
+			identityPoolId: 'ap-south-1:17f0d95f-24a2-410e-9f52-583a3ebdcf3a',
+			region: 'ap-south-1'
+		});
+
+		Storage.configure({
+			AWSS3: {
+				bucket: 'posts.connect.sosrgstudios.com', //Your bucket name;
+				region: 'ap-south-1' //Specify the region your bucket was created in;
+			}
+		});
 
 		Storage.put(photoKey, file, {
 			contentType: `image/${fileArr[fileArr.length - 1]}`,

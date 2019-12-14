@@ -218,14 +218,16 @@ class Job extends React.Component {
 					<IconButton>
 						<Share />
 					</IconButton>
-					<Button
-						className={clsx(classes.expand, {})}
-						onClick={this.handleExpandClick}
-						aria-expanded={this.state.isExpanded}
-						aria-label="show more"
-					>
-						<Comment className={classes.spacing} /> View Proposals
-					</Button>
+					{this.props.isOwner ? (
+						<Button
+							className={clsx(classes.expand, {})}
+							onClick={this.handleExpandClick}
+							aria-expanded={this.state.isExpanded}
+							aria-label="show more"
+						>
+							<Comment className={classes.spacing} /> View Proposals
+						</Button>
+					) : null}
 				</CardActions>
 				<Collapse in={this.state.isExpanded} timeout="auto" unmountOnExit>
 					<CardContent>{Comments(this.state.proposals)}</CardContent>
