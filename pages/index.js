@@ -16,7 +16,7 @@ import Work from '../components/work';
 
 const styles = {
 	container: {
-		margin: '90px 0px'
+		margin: '90px auto'
 	},
 	grid: {
 		justifyContent: 'center'
@@ -55,7 +55,7 @@ class IndexPage extends React.Component {
 				<Layout>
 					<Grid container spacing={0} className={classes.container}>
 						<Grid item lg={3}></Grid>
-						<Grid item lg={6}>
+						<Grid item xs={12} lg={6}>
 							{this.props.posts.length > 0 ? (
 								this.props.posts.map(v => {
 									if (v.type == 'social') return <Post data={v} key={v.id} />;

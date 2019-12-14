@@ -10,7 +10,8 @@ import {
 	Container,
 	Grid,
 	withStyles,
-	CircularProgress
+	CircularProgress,
+	LinearProgress
 } from '@material-ui/core';
 import { Edit, Message, LocationOn } from '@material-ui/icons';
 import Router from 'next/router';
@@ -43,7 +44,8 @@ class ProfilePage extends React.Component {
 		super(props);
 		this.state = {
 			result: null,
-			posts: []
+			posts: [],
+			loaded: false
 		};
 	}
 
@@ -54,7 +56,8 @@ class ProfilePage extends React.Component {
 			.then(res => {
 				if (res.data.Item)
 					self.setState({
-						result: res.data.Item
+						result: res.data.Item,
+						loaded: true
 					});
 				else Router.push('/setup');
 			});
@@ -70,35 +73,37 @@ class ProfilePage extends React.Component {
 	render() {
 		const { classes } = this.props;
 
-		return (
-			<Layout>
-				<Container className={classes.container}>
-					<Profile data={this.state.result} isEditable />
-				</Container>
-				<Container>
-					<Grid container spacing={1} justify="center">
-						<Grid item className={classes.center}>
-							{this.state.posts.length > 0 ? (
-								this.state.posts.map(v => {
-									if (v.type == 'social') return <Post data={v} key={v.id} />;
-									if (v.type == 'job')
-										return (
-											<Job
-												data={v}
-												key={v.id}
-												isOwner={localStorage.sub == v.uploader}
-											/>
-										);
-									if (v.type == 'work') return <Work data={v} key={v.id} />;
-								})
-							) : (
-								<CircularProgress />
-							)}
+		if (this.state.loaded)
+			return (
+				<Layout>
+					<Container className={classes.container}>
+						<Profile data={this.state.result} isEditable />
+					</Container>
+					<Container>
+						<Grid container spacing={1} justify="center">
+							<Grid item className={classes.center}>
+								{this.state.posts.length > 0 ? (
+									this.state.posts.map(v => {
+										if (v.type == 'social') return <Post data={v} key={v.id} />;
+										if (v.type == 'job')
+											return (
+												<Job
+													data={v}
+													key={v.id}
+													isOwner={localStorage.sub == v.uploader}
+												/>
+											);
+										if (v.type == 'work') return <Work data={v} key={v.id} />;
+									})
+								) : (
+									<CircularProgress />
+								)}
+							</Grid>
 						</Grid>
-					</Grid>
-				</Container>
-			</Layout>
-		);
+					</Container>
+				</Layout>
+			);
+		else return <LinearProgress />;
 	}
 }
 

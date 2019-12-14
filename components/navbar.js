@@ -148,7 +148,7 @@ export default function Navbar() {
 								<Notifications color="primary" className={classes.icon} />
 							</Badge>
 						</IconButton>
-						<Link href="/profile/" as={`/profile/`}>
+						<Link href="/profile">
 							<IconButton
 								aria-label="account of current user"
 								aria-controls="menu-appbar"

@@ -21,7 +21,8 @@ import {
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
-	Divider
+	Divider,
+	Button
 } from '@material-ui/core';
 import { Favorite, Share, Comment, Send } from '@material-ui/icons';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ import Link from 'next/link';
 const styles = theme => ({
 	card: {
 		width: '100%',
-		margin: theme.spacing(2)
+		margin: `20px 0px`
 	},
 	media: {
 		height: 0,
@@ -115,7 +116,8 @@ class Post extends React.Component {
 		super(props);
 		this.state = {
 			isExpanded: false,
-			name: ''
+			name: '',
+			comment: ''
 		};
 
 		this.handleExpandClick = this.handleExpandClick.bind(this);
@@ -189,18 +191,24 @@ class Post extends React.Component {
 									variant="standard"
 									label="Enter your comment"
 									fullWidth
+									value={this.state.comment}
+									onChange={e => this.setState({ comment: e.target.value })}
 								/>
 							</Grid>
-							<Grid xs={2}>
-								<Fab
-									size="medium"
-									color="secondary"
-									aria-label="add"
-									className={classes.margin}
-								>
-									<Send />
-								</Fab>
-							</Grid>
+							{this.state.comment != '' ? (
+								<Grid xs={2}>
+									<Button
+										variant="contained"
+										size="medium"
+										color="primary"
+										aria-label="add"
+										className={classes.margin}
+									>
+										<Send style={{ margin: '0px 5px 0px 1px' }} />
+										SEND
+									</Button>
+								</Grid>
+							) : null}
 						</Grid>
 					</CardContent>
 				</Collapse>

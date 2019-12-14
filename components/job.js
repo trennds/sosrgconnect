@@ -23,7 +23,8 @@ import {
 	ListItemText,
 	Divider,
 	Button,
-	LinearProgress
+	LinearProgress,
+	Link
 } from '@material-ui/core';
 import {
 	Favorite,
@@ -38,7 +39,7 @@ import JobProposal from './jobproposal';
 const styles = theme => ({
 	card: {
 		width: '100%',
-		margin: theme.spacing(2)
+		margin: `20px 0px`
 	},
 	media: {
 		height: 0,
@@ -88,15 +89,19 @@ function Comments(data) {
 											Experiences- {v.experience}
 										</Typography>
 										<Typography variant="body2" color="textPrimary">
-											Contact Email- {v.senderEmail}
+											Contact Email-{' '}
+											<Link href={`mailto:${v.senderEmail}`}>
+												{v.senderEmail}
+											</Link>
 										</Typography>
 										<Typography variant="body1">
-											<a
+											<Link
 												href={`https://docs.google.com/gview?url=${v.resume}&embedded=true`}
 												target="_blank"
+												underline="none"
 											>
-												Open Resume
-											</a>
+												<Button color="primary">Open Resume</Button>
+											</Link>
 										</Typography>
 									</React.Fragment>
 								}
@@ -223,28 +228,7 @@ class Job extends React.Component {
 					</Button>
 				</CardActions>
 				<Collapse in={this.state.isExpanded} timeout="auto" unmountOnExit>
-					<CardContent>
-						{Comments(this.state.proposals)}
-						<Grid container spacing={2}>
-							<Grid xs={10}>
-								<TextField
-									variant="standard"
-									label="Enter your comment"
-									fullWidth
-								/>
-							</Grid>
-							<Grid xs={2}>
-								<Fab
-									size="medium"
-									color="secondary"
-									aria-label="add"
-									className={classes.margin}
-								>
-									<Send />
-								</Fab>
-							</Grid>
-						</Grid>
-					</CardContent>
+					<CardContent>{Comments(this.state.proposals)}</CardContent>
 				</Collapse>
 				<JobProposal
 					isOpen={this.state.open}

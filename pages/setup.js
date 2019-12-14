@@ -41,7 +41,8 @@ import {
 	Badge,
 	Box,
 	LinearProgress,
-	Typography
+	Typography,
+	CardMedia
 } from '@material-ui/core';
 import {} from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
@@ -54,6 +55,17 @@ import {
 import Router from 'next/router';
 
 const styles = {
+	media: {
+		margin: '10px',
+		height: '200px',
+		borderRadius: '5px' // 16:9
+	},
+	profile: {
+		margin: '10px',
+		borderRadius: '50%',
+		height: '100px',
+		width: '100px'
+	},
 	button: {
 		backgroundColor: 'blue',
 		color: 'white'
@@ -80,7 +92,7 @@ class SetupPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 0,
+			currentStep: 2,
 			uploadValue: 0,
 			steps: ['Email Verification', 'Add Details', 'Add Image'],
 			isLoading: false,
@@ -89,8 +101,8 @@ class SetupPage extends React.Component {
 			dob: new Date('2014-08-18T21:11:54'),
 			roles: [],
 			studios: [],
-			coverPic: '',
-			profilePic: '',
+			coverPic: 'https://placekitten.com/500/1024',
+			profilePic: 'https://placekitten.com/500/1024',
 			bio: '',
 			city: '',
 			currentRole: '',
@@ -105,7 +117,6 @@ class SetupPage extends React.Component {
 
 	componentDidMount() {
 		if (!localStorage.email) Router.replace('/login');
-
 		if (localStorage.email_verified == 'true')
 			this.setState({ currentStep: 1 });
 		else this.setState({ currentStep: 0 });
@@ -195,9 +206,9 @@ class SetupPage extends React.Component {
 	resend() {
 		Auth.resendSignUp(localStorage.email)
 			.then(res => {
-				alert("Verification Code sent to your email.")
+				alert('Verification Code sent to your email.');
 			})
-			.catch(err => alert("Code sending failed"));
+			.catch(err => alert('Code sending failed'));
 	}
 
 	verify() {
@@ -256,8 +267,8 @@ class SetupPage extends React.Component {
 		const { classes } = this.props;
 		return (
 			<Grid container spacing={2}>
-				<Grid item xs={2}></Grid>
-				<Grid item xs={8}>
+				<Grid item lg={2}></Grid>
+				<Grid item xs={12} lg={8}>
 					<Stepper activeStep={this.state.currentStep}>
 						{this.state.steps.map((v, index) => {
 							return (
@@ -341,7 +352,7 @@ class SetupPage extends React.Component {
 										<KeyboardDatePicker
 											disableToolbar
 											variant="inline"
-											format="MM/dd/yyyy"
+											format="dd/MM/yyyy"
 											margin="normal"
 											id="date-picker-inline"
 											label="Date of Birth"
@@ -408,7 +419,11 @@ class SetupPage extends React.Component {
 											Upload Cover Photo
 										</Button>
 										{this.state.coverPic != '' ? (
-											<img src={this.state.coverPic} />
+											<CardMedia
+												image={this.state.coverPic}
+												className={classes.media}
+												title="Paella dish"
+											/>
 										) : null}
 									</Box>
 
@@ -429,7 +444,11 @@ class SetupPage extends React.Component {
 											Upload Profile Photo
 										</Button>
 										{this.state.profilePic != '' ? (
-											<img src={this.state.profilePic} />
+											<CardMedia
+												image={this.state.profilePic}
+												className={classes.profile}
+												title="Paella dish"
+											/>
 										) : null}
 									</Box>
 								</Container>

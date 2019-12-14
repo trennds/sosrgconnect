@@ -50,7 +50,7 @@ class Layout extends React.Component {
 					<script src="https://sdk.amazonaws.com/js/aws-sdk-2.584.0.min.js"></script>
 				</Head>
 				<Navbar />
-				<main>{this.props.children}</main>
+				<div>{this.props.children}</div>
 				{Copyright()}
 			</div>
 		);
