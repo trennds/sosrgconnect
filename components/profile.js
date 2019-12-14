@@ -14,8 +14,9 @@ import {
 	CircularProgress,
 	makeStyles
 } from '@material-ui/core';
-import { Edit, Message, LocationOn } from '@material-ui/icons';
+import { Edit, Message, LocationOn, ExitToApp } from '@material-ui/icons';
 import Link from 'next/link';
+import Router from 'next/router';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -46,6 +47,11 @@ const useStyles = makeStyles(theme => ({
 export default function Profile(props) {
 	const classes = useStyles();
 
+	const logOut = () => {
+		localStorage.clear();
+		Router.push('/login');
+	};
+
 	if (props.data != null)
 		return (
 			<Card>
@@ -74,10 +80,17 @@ export default function Profile(props) {
 					</Typography>
 				</CardContent>
 				<CardActions>
-					<Button color="primary">
-						<Message className={classes.spacing}></Message>
-						Message
-					</Button>
+					{props.isEditable ? (
+						<Button color="primary" onClick={e => logOut()}>
+							<ExitToApp className={classes.spacing}></ExitToApp>
+							Log Out
+						</Button>
+					) : (
+						<Button color="primary">
+							<Message className={classes.spacing}></Message>
+							Message
+						</Button>
+					)}
 					{props.isEditable ? (
 						<Link href="/edit">
 							<Button color="primary">

@@ -154,7 +154,6 @@ export default function Navbar() {
 								aria-controls="menu-appbar"
 								aria-haspopup="true"
 								color="inherit"
-								onClick={() => Router.push('/profile')}
 							>
 								<AccountCircle />
 							</IconButton>
