@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CreateSocial(props) {
 	const classes = useStyles();
-	const id = v4();
+	const [id, setId] = useState(v4());
 	const [description, setDescription] = useState(null);
 	const [ytUrl, setYtUrl] = useState(null);
 	const [webUrl, setWebUrl] = useState(null);
@@ -84,7 +84,7 @@ export default function CreateSocial(props) {
 		const file = files[0];
 		var fileName = file.name;
 		var fileArr = fileName.split('.');
-		var photoKey = `C_${id}.${fileArr[fileArr.length - 1]}`;
+		var photoKey = `P_${id}.${fileArr[fileArr.length - 1]}`;
 
 		Storage.put(photoKey, file, {
 			contentType: `image/${fileArr[fileArr.length - 1]}`,
