@@ -66,9 +66,6 @@ export default function Profile(props) {
 								<LocationOn></LocationOn>
 								{props.data.city}
 							</Typography>
-							<Typography align="center" variant="subtitle2" gutterBottom>
-								Rs. 2000/- per day
-							</Typography>
 						</Grid>
 						<Typography>{props.data.bio}</Typography>
 					</Grid>

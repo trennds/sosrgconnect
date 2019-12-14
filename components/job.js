@@ -73,7 +73,9 @@ function Comments(data) {
 					<div>
 						<ListItem alignItems="flex-start">
 							<ListItemAvatar>
-								<Avatar alt="Travis Howard">R</Avatar>
+								<Avatar alt="Travis Howard">
+									{v.senderName.charAt(0).toUpperCase()}
+								</Avatar>
 							</ListItemAvatar>
 							<ListItemText
 								primary={v.senderName}
