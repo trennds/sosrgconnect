@@ -30,7 +30,8 @@ import {
 	DialogActions,
 	makeStyles,
 	InputAdornment,
-	CircularProgress
+	CircularProgress,
+	LinearProgress
 } from '@material-ui/core';
 import { Link, YouTube } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
@@ -138,6 +139,9 @@ export default function CreateSocial(props) {
 		>
 			<DialogTitle id="form-dialog-title">Create Social Post</DialogTitle>
 			<DialogContent>
+				{uploadValue != 0 ? (
+					<LinearProgress variant="determinate" value={uploadValue} />
+				) : null}
 				{/* <DialogContentText>
 					To subscribe to this website, please enter your email address here. We
 					will send updates occasionally.

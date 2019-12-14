@@ -22,7 +22,9 @@ import {
 	ListItemAvatar,
 	ListItemText,
 	Divider,
-	Button
+	Button,
+	Dialog,
+	DialogContent
 } from '@material-ui/core';
 import { Favorite, Share, Comment, Send } from '@material-ui/icons';
 import Link from 'next/link';
@@ -74,40 +76,21 @@ function Comments() {
 				/>
 			</ListItem>
 			<Divider variant="inset" component="li" />
-			<ListItem alignItems="flex-start">
-				<ListItemAvatar>
-					<Avatar alt="Travis Howard">R</Avatar>
-				</ListItemAvatar>
-				<ListItemText
-					primary="Summer BBQ"
-					secondary={
-						<React.Fragment>
-							<Typography component="span" variant="body2" color="textPrimary">
-								to Scott, Alex, Jennifer
-							</Typography>
-							{" — Wish I could come, but I'm out of town this…"}
-						</React.Fragment>
-					}
-				/>
-			</ListItem>
-			<Divider variant="inset" component="li" />
-			<ListItem alignItems="flex-start">
-				<ListItemAvatar>
-					<Avatar alt="Travis Howard">R</Avatar>
-				</ListItemAvatar>
-				<ListItemText
-					primary="Oui Oui"
-					secondary={
-						<React.Fragment>
-							<Typography component="span" variant="body2" color="textPrimary">
-								Sandra Adams
-							</Typography>
-							{' — Do you have Paris recommendations? Have you ever…'}
-						</React.Fragment>
-					}
-				/>
-			</ListItem>
 		</List>
+	);
+}
+
+function ImageModal(props) {
+	return (
+		<Dialog
+			open={props.isOpen}
+			onClose={props.handleState}
+			aria-labelledby="form-dialog-title"
+		>
+			<DialogContent>
+				<img src={props.image} style={{ maxHeight: '500px', width: '100%' }} />
+			</DialogContent>
+		</Dialog>
 	);
 }
 
@@ -117,7 +100,8 @@ class Post extends React.Component {
 		this.state = {
 			isExpanded: false,
 			name: '',
-			comment: ''
+			comment: '',
+			isOpen: false
 		};
 
 		this.handleExpandClick = this.handleExpandClick.bind(this);
@@ -145,6 +129,13 @@ class Post extends React.Component {
 
 		return (
 			<Card className={classes.card}>
+				<ImageModal
+					isOpen={this.state.isOpen}
+					image={this.props.data.image}
+					handleState={e =>
+						this.setState((state, props) => ({ isOpen: !state.isOpen }))
+					}
+				/>
 				<Link href="/profile/[id]" as={`/profile/${this.props.data.uploader}`}>
 					<CardHeader
 						avatar={
@@ -156,6 +147,7 @@ class Post extends React.Component {
 					></CardHeader>
 				</Link>
 				<CardMedia
+					onClick={e => this.setState({ isOpen: true })}
 					image={this.props.data.image}
 					className={classes.media}
 					title="Paella dish"
@@ -195,20 +187,19 @@ class Post extends React.Component {
 									onChange={e => this.setState({ comment: e.target.value })}
 								/>
 							</Grid>
-							{this.state.comment != '' ? (
-								<Grid xs={2}>
-									<Button
-										variant="contained"
-										size="medium"
-										color="primary"
-										aria-label="add"
-										className={classes.margin}
-									>
-										<Send style={{ margin: '0px 5px 0px 1px' }} />
-										SEND
-									</Button>
-								</Grid>
-							) : null}
+							<Grid xs={2}>
+								<Button
+									variant="contained"
+									size="medium"
+									color="primary"
+									aria-label="add"
+									className={classes.margin}
+									disabled={this.state.comment == ''}
+								>
+									<Send style={{ margin: '0px 5px 0px 1px' }} />
+									SEND
+								</Button>
+							</Grid>
 						</Grid>
 					</CardContent>
 				</Collapse>
