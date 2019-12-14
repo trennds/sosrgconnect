@@ -105,14 +105,10 @@ export default function CreateSocial(props) {
 			}
 		})
 			.then(result => {
-				Storage.get(photoKey)
-					.then(result =>
-						setFile(
-							'https://s3.ap-south-1.amazonaws.com/posts.connect.sosrgstudios.com/public/' +
-								photoKey
-						)
-					)
-					.catch(err => console.log(err));
+				setFile(
+					'https://s3.ap-south-1.amazonaws.com/posts.connect.sosrgstudios.com/public/' +
+						photoKey
+				);
 			})
 			.catch(err => console.log(err));
 	};
