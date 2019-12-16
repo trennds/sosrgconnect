@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import Head from 'next/head';
 import { Link, Typography, makeStyles, withStyles } from '@material-ui/core';
+import { initGA, logPageView } from './googleAnalytics.js';
 
 const drawerWidth = 240;
 
@@ -29,6 +30,13 @@ function Copyright() {
 }
 
 class Layout extends React.Component {
+	componentDidMount() {
+		if (!window.GA_INITIALIZED) {
+			initGA();
+			window.GA_INITIALIZED = true;
+		}
+		logPageView();
+	}
 	render() {
 		const { classes } = this.props;
 

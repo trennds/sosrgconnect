@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import Job from '../components/job';
 import Work from '../components/work';
+import LogRocket from 'logrocket';
 
 const styles = {
 	container: {
@@ -45,6 +46,13 @@ class IndexPage extends React.Component {
 			});
 		this.setState({
 			loaded: true
+		});
+		LogRocket.init('mk6dd2/sosrgconnect');
+		LogRocket.identify(localStorage.sub, {
+			name: localStorage.name,
+			email: localStorage.email,
+			// Add your own custom user variables here, ie:
+			subscriptionType: 'pro'
 		});
 	}
 	render() {
