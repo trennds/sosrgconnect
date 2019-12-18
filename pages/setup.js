@@ -355,7 +355,7 @@ class SetupPage extends React.Component {
 											format="dd/MM/yyyy"
 											margin="normal"
 											id="date-picker-inline"
-											label="Date of Birth"
+											label="Date of Birth (dd/mm/yyyy)"
 											value={this.state.dob}
 											className={classes.spacing}
 											onChange={d => this.setState({ dob: d })}
