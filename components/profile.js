@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
 	Container,
@@ -46,6 +46,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile(props) {
 	const classes = useStyles();
+	const [data, setData] = useState(null);
+
+	useEffect(() => {
+		if(data == null) {
+			
+		}
+	})
 
 	const logOut = () => {
 		localStorage.clear();

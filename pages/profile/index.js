@@ -73,15 +73,14 @@ class ProfilePage extends React.Component {
 	render() {
 		const { classes } = this.props;
 
-		if (this.state.loaded)
 			return (
 				<Layout>
 					<Container className={classes.container}>
-						<Profile data={this.state.result} isEditable />
+						{/* <Profile data={this.state.result} isEditable /> */}
 					</Container>
 					<Container>
 						<Grid container spacing={1} justify="center">
-							<Grid item className={classes.center}>
+							{/* <Grid item className={classes.center}>
 								{this.state.posts.length > 0 ? (
 									this.state.posts.map(v => {
 										if (v.type == 'social') return <Post data={v} key={v.id} />;
@@ -98,12 +97,11 @@ class ProfilePage extends React.Component {
 								) : (
 									<CircularProgress />
 								)}
-							</Grid>
+							</Grid> */}
 						</Grid>
 					</Container>
 				</Layout>
 			);
-		else return <LinearProgress />;
 	}
 }
 
