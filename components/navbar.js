@@ -34,6 +34,7 @@ import CreateWork from './creatework';
 import CreateJob from './createjob';
 import FeedbackForm from './feedbackform';
 import Link from 'next/link';
+import Introduction from './introduction';
 
 const drawerWidth = 240;
 
@@ -112,6 +113,7 @@ export default function Navbar() {
 	const [createWork, setCreateWork] = useState(false);
 	const [createJob, setCreateJob] = useState(false);
 	const [feedback, setFeedback] = useState(false);
+	const [introduction, setIntroduction] = useState(false);
 
 	const handleDrawerOpen = () => {
 		setOpen(!open);
@@ -195,6 +197,12 @@ export default function Navbar() {
 							<Message />
 						</ListItemIcon>
 						<ListItemText primary="Messages" />
+					</ListItem>
+					<ListItem button onClick={e => setIntroduction(true)}>
+						<ListItemIcon>
+							<Work />
+						</ListItemIcon>
+						<ListItemText primary="Site Tour" />
 					</ListItem>
 					<ListItem button onClick={() => Router.push('/edit')}>
 						<ListItemIcon>

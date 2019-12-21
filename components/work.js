@@ -175,7 +175,7 @@ class Work extends React.Component {
 						Experience Required -{this.props.data.experience}
 					</Typography>
 					<Typography variant="h6" color="textSecondary">
-						Rs. {this.numberWithCommas(this.props.data.amount)}/-
+						Rs. {this.props.data.amount}/-
 					</Typography>
 				</CardContent>
 				<CardActions>

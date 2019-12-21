@@ -203,7 +203,7 @@ class Job extends React.Component {
 						Experience Required -{this.props.data.experience}
 					</Typography>
 					<Typography variant="h6" color="textSecondary">
-						Rs. {this.numberWithCommas(this.props.data.salary)}/-
+						Rs. {this.props.data.salary}/-
 					</Typography>
 				</CardContent>
 				<CardActions>
