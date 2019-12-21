@@ -49,7 +49,112 @@ class InboxPage extends React.Component {
 										<Avatar alt="Remy Sharp">R</Avatar>
 									</ListItemAvatar>
 									<ListItemText
-										primary="Romit Karmakar"
+										primary="SosrG Cine Studio"
+										secondary={
+											<React.Fragment>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.inline}
+													color="textPrimary"
+												>
+													29/10/2019
+												</Typography>
+												{" — I'll be in your neighborhood doing errands this…"}
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<ListItem alignItems="flex-start">
+									<ListItemAvatar>
+										<Avatar alt="Remy Sharp">R</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary="SosrG Acting and Casting Studio"
+										secondary={
+											<React.Fragment>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.inline}
+													color="textPrimary"
+												>
+													29/10/2019
+												</Typography>
+												{" — I'll be in your neighborhood doing errands this…"}
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<ListItem alignItems="flex-start">
+									<ListItemAvatar>
+										<Avatar alt="Remy Sharp">R</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary="SosrG Music Studio"
+										secondary={
+											<React.Fragment>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.inline}
+													color="textPrimary"
+												>
+													29/10/2019
+												</Typography>
+												{" — I'll be in your neighborhood doing errands this…"}
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<ListItem alignItems="flex-start">
+									<ListItemAvatar>
+										<Avatar alt="Remy Sharp">R</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary="SosrG Dance Studio"
+										secondary={
+											<React.Fragment>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.inline}
+													color="textPrimary"
+												>
+													29/10/2019
+												</Typography>
+												{" — I'll be in your neighborhood doing errands this…"}
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<ListItem alignItems="flex-start">
+									<ListItemAvatar>
+										<Avatar alt="Remy Sharp">R</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary="SosrG Art Studio"
+										secondary={
+											<React.Fragment>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.inline}
+													color="textPrimary"
+												>
+													29/10/2019
+												</Typography>
+												{" — I'll be in your neighborhood doing errands this…"}
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<ListItem alignItems="flex-start">
+									<ListItemAvatar>
+										<Avatar alt="Remy Sharp">R</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary="SosrG Literary Studio"
 										secondary={
 											<React.Fragment>
 												<Typography
@@ -69,7 +174,9 @@ class InboxPage extends React.Component {
 							</List>
 						</Grid>
 						<Grid item>
-							<Chat />
+							<Typography variant="h5">
+								We will launching this feature soon.
+							</Typography>
 						</Grid>
 					</Grid>
 				</Container>

@@ -1,11 +1,14 @@
 import styled from 'styled-components';
-import { Container, Grid, makeStyles, NoSsr, Box } from '@material-ui/core';
+import { Container, Grid, makeStyles, NoSsr, Box, Card, CardContent, Paper, Typography } from '@material-ui/core';
 import {} from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		padding: '10px 10px',
 		width: '100%'
+	},
+	message: {
+		padding: '10px'
 	}
 }));
 
@@ -69,17 +72,11 @@ export default function Chat() {
 
 	return (
 		<div style={{ width: '100%' }}>
-			<NoSsr>
-				<Container>
-					<Box display="flex" flexDirection="row-reverse">
-						<Receiver>Hello World !!!</Receiver>
-					</Box>
-					<Box display="flex" flexDirection="row-reverse">
-						dfdgghhhh
-						<Sender>Hii Romit Karmakar</Sender>
-					</Box>
-				</Container>
-			</NoSsr>
+			<Container>
+				<Paper className>
+					<Typography>Hello World</Typography>
+				</Paper>
+			</Container>
 		</div>
 	);
 }
