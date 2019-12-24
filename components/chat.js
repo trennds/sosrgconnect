@@ -1,6 +1,26 @@
 import styled from 'styled-components';
-import { Container, Grid, makeStyles, NoSsr, Box, Card, CardContent, Paper, Typography } from '@material-ui/core';
+import {
+	Container,
+	Grid,
+	makeStyles,
+	NoSsr,
+	Box,
+	Card,
+	CardContent,
+	Paper,
+	Typography,
+	TextField
+} from '@material-ui/core';
 import {} from '@material-ui/icons';
+import {
+	ThemeProvider,
+	Message,
+	MessageGroup,
+	MessageList,
+	MessageText
+} from '@livechat/ui-kit';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -67,16 +87,67 @@ const Sender = styled.div`
 	}
 `;
 
-export default function Chat() {
-	const classes = useStyles();
+export default class Chat extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			messages: props.messages
+		}
+		this.handleKeyPress = this.handleKeyPress.bind(this);
+	}
 
-	return (
-		<div style={{ width: '100%' }}>
-			<Container>
-				<Paper className>
-					<Typography>Hello World</Typography>
-				</Paper>
+	handleKeyPress(e) {
+		var self = this;
+		if (e.key == 'Enter') {
+			var text = e.target.value;
+			axios
+				.post(`${process.env.API_BASE_URL}message/`, {
+					sender: localStorage.sub,
+					body: text,
+					studio: self.props.studio,
+					senderName: localStorage.name
+				})
+				.then(res => {
+					self.setState((state, props) => ({
+						messages: [
+							...state.messages,
+							{
+								sender: localStorage.sub,
+								body: text,
+								studio: self.props.studio,
+								senderName: localStorage.name
+							}
+						]
+					}));
+				});
+		}
+	}
+
+	render() {
+		return (
+			<Container style={{ width: '100%', height: '100vh' }}>
+				<ThemeProvider>
+					<MessageList active>
+						{this.state.messages.map((v, index) => {
+							return (
+								<Message authorName={v.senderName} isOwn={v.sender == localStorage.sub} key={index}>
+									<MessageText>{v.body}</MessageText>
+								</Message>
+							);
+						})}
+					</MessageList>
+				</ThemeProvider>
+				<TextField
+					variant="outlined"
+					label="Enter message"
+					style={{
+						position: 'fixed',
+						bottom: '1%',
+						width: '45%'
+					}}
+					onKeyDown={e => this.handleKeyPress(e)}
+				/>
 			</Container>
-		</div>
-	);
+		);
+	}
 }

@@ -14,6 +14,7 @@ import {
 import Job from '../components/job';
 import Work from '../components/work';
 import LogRocket from 'logrocket';
+import Favorite from '../components/favorite';
 
 const styles = {
 	container: {
@@ -61,6 +62,7 @@ class IndexPage extends React.Component {
 		if (this.state.loaded)
 			return (
 				<Layout>
+					{/* <Favorite /> */}
 					<Grid container spacing={0} className={classes.container}>
 						<Grid item lg={3}></Grid>
 						<Grid item xs={12} lg={6}>
