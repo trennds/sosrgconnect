@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import Head from 'next/head';
 import { Link, Typography, makeStyles, withStyles } from '@material-ui/core';
-import { initGA, logPageView } from './googleAnalytics.js';
 
 const drawerWidth = 240;
 
@@ -30,13 +29,7 @@ function Copyright() {
 }
 
 class Layout extends React.Component {
-	componentDidMount() {
-		if (!window.GA_INITIALIZED) {
-			initGA();
-			window.GA_INITIALIZED = true;
-		}
-		logPageView();
-	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -55,7 +48,13 @@ class Layout extends React.Component {
 						rel="stylesheet"
 						href="https://fonts.googleapis.com/icon?family=Material+Icons"
 					/>
+					<link
+						href="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css"
+						rel="stylesheet"
+					/>
 					<script src="https://sdk.amazonaws.com/js/aws-sdk-2.584.0.min.js"></script>
+					<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+					<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
 				</Head>
 				<Navbar />
 				<div>{this.props.children}</div>

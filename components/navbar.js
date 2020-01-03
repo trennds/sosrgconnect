@@ -27,7 +27,8 @@ import {
 	Message,
 	BusinessCenter,
 	Feedback,
-	Edit
+	Edit,
+	LocationOn
 } from '@material-ui/icons';
 import CreatePost from './createsocial';
 import CreateWork from './creatework';
@@ -197,6 +198,12 @@ export default function Navbar() {
 							<Message />
 						</ListItemIcon>
 						<ListItemText primary="Messages" />
+					</ListItem>
+					<ListItem button onClick={() => Router.push('/findnearby')}>
+						<ListItemIcon>
+							<LocationOn/>
+						</ListItemIcon>
+						<ListItemText primary="Find Nearby" />
 					</ListItem>
 					<ListItem button onClick={e => setIntroduction(true)}>
 						<ListItemIcon>
