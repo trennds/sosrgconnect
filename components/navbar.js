@@ -28,7 +28,8 @@ import {
 	BusinessCenter,
 	Feedback,
 	Edit,
-	LocationOn
+	LocationOn,
+	Poll
 } from '@material-ui/icons';
 import CreatePost from './createsocial';
 import CreateWork from './creatework';
@@ -36,6 +37,7 @@ import CreateJob from './createjob';
 import FeedbackForm from './feedbackform';
 import Link from 'next/link';
 import Introduction from './introduction';
+import CreatePoll from './createpoll';
 
 const drawerWidth = 240;
 
@@ -113,6 +115,7 @@ export default function Navbar() {
 	const [createPost, setCreatePost] = useState(false);
 	const [createWork, setCreateWork] = useState(false);
 	const [createJob, setCreateJob] = useState(false);
+	const [createPoll, setCreatePoll] = useState(false);
 	const [feedback, setFeedback] = useState(false);
 	const [introduction, setIntroduction] = useState(false);
 
@@ -193,6 +196,12 @@ export default function Navbar() {
 						</ListItemIcon>
 						<ListItemText primary="Create Work/Project" />
 					</ListItem>
+					<ListItem button onClick={e => setCreatePoll(true)}>
+						<ListItemIcon>
+							<Poll />
+						</ListItemIcon>
+						<ListItemText primary="Create Poll" />
+					</ListItem>
 					<ListItem button onClick={() => Router.push('/inbox')}>
 						<ListItemIcon>
 							<Message />
@@ -228,6 +237,7 @@ export default function Navbar() {
 			<CreatePost isOpen={createPost} handleOpen={setCreatePost} />
 			<CreateWork isOpen={createWork} handleOpen={setCreateWork} />
 			<CreateJob isOpen={createJob} handleOpen={setCreateJob} />
+			<CreatePoll isOpen={createPoll} handleOpen={setCreatePoll} />
 			<FeedbackForm isOpen={feedback} handleOpen={setFeedback} />
 		</div>
 	);
