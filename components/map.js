@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMapboxGl, { Layer, Feature, Marker } from 'react-mapbox-gl';
-import { Avatar } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 
 class Map extends React.Component {
 	constructor(props) {

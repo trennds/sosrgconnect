@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { AutoRotatingCarousel, Slide } from 'material-auto-rotating-carousel';
-import { red, blue, green } from '@material-ui/core/colors';
+import red from "@material-ui/core/colors/red"
+import blue from "@material-ui/core/colors/blue"
+import green from "@material-ui/core/colors/green"
 import Button from '@material-ui/core/Button';
 
 export default function Introduction(props) {

@@ -1,20 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { red } from "@material-ui/core/colors";
+import red from "@material-ui/core/colors/red";
 import axios from "axios";
-import {
-  Card,
-  CardContent,
-  Avatar,
-  CardHeader,
-  withStyles,
-  Typography,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  LinearProgress
-} from "@material-ui/core";
+
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
+import Avatar from "@material-ui/core/Avatar"
+import CardHeader from "@material-ui/core/CardHeader"
+import withStyles from "@material-ui/core/styles/withStyles"
+import Typography from "@material-ui/core/Typography"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
+import ListItemText from "@material-ui/core/ListItemText"
+import LinearProgress from "@material-ui/core/LinearProgress"
 import Link from "next/link";
 
 const styles = theme => ({

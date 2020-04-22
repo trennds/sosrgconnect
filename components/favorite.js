@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
-import { Person } from '@material-ui/icons'
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import SpeedDial from "@material-ui/lab/SpeedDial"
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction"
+import Person from '@material-ui/icons/Person'
 
 const useStyles = makeStyles(theme => ({
 	speedDial: {

@@ -4,13 +4,6 @@ import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import {
-	Card,
-	CardContent,
-	CardMedia,
-	Avatar,
-	CardHeader,
-	withStyles,
-	Typography,
 	CardActions,
 	IconButton,
 	Collapse,
@@ -26,6 +19,12 @@ import {
 	LinearProgress,
 	Link
 } from '@material-ui/core';
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
+import Avatar from "@material-ui/core/Avatar"
+import CardHeader from "@material-ui/core/CardHeader"
+import Typography from "@material-ui/core/Typography"
+import withStyles from "@material-ui/core/styles/withStyles"
 import {
 	Favorite,
 	Share,

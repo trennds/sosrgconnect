@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
-	makeStyles,
-	withStyles,
 	Typography,
 	TextField,
 	Grid,
@@ -18,12 +16,12 @@ import {
 	Container,
 	InputAdornment,
 	IconButton,
-	Input,
 	OutlinedInput,
 	InputLabel,
 	FormControl,
 	CircularProgress
 } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles"
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
 import Router from 'next/router';
 import Amplify from 'aws-amplify';

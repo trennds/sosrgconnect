@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import Head from 'next/head';
-import { Link, Typography, makeStyles, withStyles } from '@material-ui/core';
+import Link from "@material-ui/core/Link"
+import Typography from "@material-ui/core/Typography"
+import makeStyles from "@material-ui/core/styles/makeStyles"
+import withStyles from "@material-ui/core/styles/withStyles"
 
 const drawerWidth = 240;
 

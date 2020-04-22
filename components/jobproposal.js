@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-import {
-	Container,
-	Typography,
-	TextField,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
-	InputAdornment,
-	Grid,
-	CircularProgress,
-	Box
-} from '@material-ui/core';
-import {} from '@material-ui/icons';
+
+import Typography from "@material-ui/core/Typography"
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogContent from "@material-ui/core/DialogContent"
+import DialogActions from "@material-ui/core/DialogActions"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Box from "@material-ui/core/TextField"
 import v4 from 'uuid/v4';
 import Amplify, { Storage } from 'aws-amplify';
 import Auth from '@aws-amplify/auth';

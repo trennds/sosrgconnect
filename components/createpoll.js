@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  InputAdornment,
-  Grid,
-  CircularProgress,
-  Chip
-} from "@material-ui/core";
-import {} from "@material-ui/icons";
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogContent from "@material-ui/core/DialogContent"
+import DialogActions from "@material-ui/core/DialogActions"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Chip from "@material-ui/core/Chip"
 
 export default function CreatePoll(props) {
   const [description, setDescription] = useState("");

@@ -1,42 +1,35 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import Router from 'next/router';
-import {
-	AppBar,
-	Typography,
-	Toolbar,
-	makeStyles,
-	IconButton,
-	Button,
-	Drawer,
-	useTheme,
-	Divider,
-	ListItem,
-	List,
-	ListItemIcon,
-	ListItemText,
-	Badge,
-	CssBaseline
-} from '@material-ui/core';
-import {
-	AccountCircle,
-	Add,
-	Menu,
-	Work,
-	Notifications,
-	Message,
-	BusinessCenter,
-	Feedback,
-	Edit,
-	LocationOn,
-	Poll
-} from '@material-ui/icons';
+import AppBar from "@material-ui/core/AppBar"
+import Typography from "@material-ui/core/Typography"
+import Toolbar from "@material-ui/core/Toolbar"
+import makeStyles from "@material-ui/core/styles/makeStyles"
+import IconButton from "@material-ui/core/IconButton"
+import Drawer from "@material-ui/core/Drawer"
+import useTheme from "@material-ui/core/styles/useTheme"
+import ListItem from "@material-ui/core/ListItem"
+import List from "@material-ui/core/List"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import Badge from "@material-ui/core/Badge"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import AccountCircle from "@material-ui/icons/AccountCircle"
+import Add from "@material-ui/icons/Add"
+import Menu from "@material-ui/icons/Menu"
+import Work from "@material-ui/icons/Work"
+import Notifications from "@material-ui/icons/Notifications"
+import Message from "@material-ui/icons/Message"
+import BusinessCenter from "@material-ui/icons/BusinessCenter"
+import Feedback from "@material-ui/icons/Feedback"
+import Edit from "@material-ui/icons/Edit"
+import LocationOn from "@material-ui/icons/LocationOn"
+import Poll from "@material-ui/icons/Poll"
 import CreatePost from './createsocial';
 import CreateWork from './creatework';
 import CreateJob from './createjob';
 import FeedbackForm from './feedbackform';
 import Link from 'next/link';
-import Introduction from './introduction';
 import CreatePoll from './createpoll';
 
 const drawerWidth = 240;

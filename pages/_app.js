@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
 import Router from 'next/router';
-import { LinearProgress } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 class MyApp extends App {
 	constructor(props) {

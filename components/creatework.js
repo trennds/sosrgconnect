@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import {
-	Container,
-	Typography,
-	TextField,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
-	InputAdornment,
-	Grid,
-	CircularProgress
-} from '@material-ui/core';
-import { LocationOn } from '@material-ui/icons';
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogContent from "@material-ui/core/DialogContent"
+import DialogActions from "@material-ui/core/DialogActions"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Grid from "@material-ui/core/Grid"
+import LocationOn from '@material-ui/icons/LocationOn';
 import NumberFormat from 'react-number-format';
 
 function NumberFormatCustom(props) {

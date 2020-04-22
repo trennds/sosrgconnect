@@ -21,19 +21,17 @@ Amplify.configure({
 		}
 	}
 });
-import {
-	TextField,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
-	makeStyles,
-	InputAdornment,
-	CircularProgress,
-	LinearProgress
-} from '@material-ui/core';
-import { Link, YouTube } from '@material-ui/icons';
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogContent from "@material-ui/core/DialogContent"
+import DialogActions from "@material-ui/core/DialogActions"
+import makeStyles from "@material-ui/core/styles/makeStyles"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import LinearProgress from "@material-ui/core/LinearProgress"
+import Link from '@material-ui/icons/Link';
 import { DropzoneArea } from 'material-ui-dropzone';
 
 const useStyles = makeStyles(theme => ({
