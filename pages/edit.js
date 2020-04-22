@@ -6,13 +6,13 @@ import Profile from '../components/profile';
 import {
 	Container,
 	Grid,
-	withStyles,
 	Card,
 	CardContent,
 	CardActions,
 	TextField,
 	Button
 } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles"
 import { Edit, Message, LocationOn } from '@material-ui/icons';
 import Router from 'next/router';
 

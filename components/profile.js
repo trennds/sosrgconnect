@@ -3,7 +3,6 @@ import axios from 'axios';
 import {
 	Container,
 	Grid,
-	withStyles,
 	Card,
 	CardContent,
 	Avatar,
@@ -11,9 +10,9 @@ import {
 	CardMedia,
 	CardActions,
 	Button,
-	CircularProgress,
-	makeStyles
+	CircularProgress
 } from '@material-ui/core';
+import { makeStyles, withStyles } from "@material-ui/core/styles"
 import { Edit, Message, LocationOn, ExitToApp } from '@material-ui/icons';
 import Link from 'next/link';
 import Router from 'next/router';

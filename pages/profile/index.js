@@ -9,10 +9,10 @@ import Profile from '../../components/profile';
 import {
 	Container,
 	Grid,
-	withStyles,
 	CircularProgress,
 	LinearProgress
 } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles"
 import { Edit, Message, LocationOn } from '@material-ui/icons';
 import Router from 'next/router';
 

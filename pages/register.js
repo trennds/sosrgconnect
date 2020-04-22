@@ -14,8 +14,6 @@ Amplify.configure({
 	}
 });
 import {
-	makeStyles,
-	withStyles,
 	Typography,
 	TextField,
 	Grid,
@@ -36,6 +34,7 @@ import {
 	FormControl,
 	CircularProgress
 } from '@material-ui/core';
+import { makeStyles, withStyles } from "@material-ui/core/styles"
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
 
 const styles = {

@@ -28,7 +28,6 @@ import {
 	Grid,
 	CardActions,
 	Button,
-	withStyles,
 	CardHeader,
 	CircularProgress,
 	FormControl,
@@ -44,6 +43,7 @@ import {
 	Typography,
 	CardMedia
 } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles"
 import {} from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
 import { Autocomplete } from '@material-ui/lab';

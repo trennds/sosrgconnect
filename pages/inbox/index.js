@@ -9,13 +9,12 @@ import {
 	ListItem,
 	ListItemAvatar,
 	Avatar,
-	makeStyles,
-	withStyles,
 	ListItemText,
 	Divider,
 	IconButton,
 	Link
 } from '@material-ui/core';
+import { makeStyles, withStyles } from "@material-ui/core/styles"
 import { ArrowForward } from '@material-ui/icons';
 
 const styles = makeStyles(theme => ({
